@@ -1,0 +1,33 @@
+<div class="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+  <div class="max-w-md mx-auto bg-white rounded-lg shadow-md p-6">
+    <div class="text-center">
+      <h1 class="text-2xl font-bold text-gray-900 mb-6">프로필</h1>
+      
+      <div class="space-y-4">
+        <div>
+          <label class="block text-sm font-medium text-gray-700">이름</label>
+          <p class="mt-1 text-lg text-gray-900"><%= @user.name %></p>
+        </div>
+        
+        <div>
+          <label class="block text-sm font-medium text-gray-700">이메일</label>
+          <p class="mt-1 text-lg text-gray-900"><%= @user.email %></p>
+        </div>
+        
+        <div>
+          <label class="block text-sm font-medium text-gray-700">가입일</label>
+          <p class="mt-1 text-lg text-gray-900"><%= @user.created_at.strftime("%Y년 %m월 %d일") %></p>
+        </div>
+      </div>
+      
+      <div class="mt-8 space-y-3">
+        <%= link_to "홈으로", root_path, 
+              class: "w-full inline-flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" %>
+        
+        <%= link_to "로그아웃", logout_path, method: :delete, 
+              class: "w-full inline-flex justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500",
+              data: { confirm: "정말 로그아웃하시겠습니까?" } %>
+      </div>
+    </div>
+  </div>
+</div>

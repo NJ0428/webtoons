@@ -1,0 +1,38 @@
+<main class="container mx-auto mt-8 px-5 font-sans antialiased">
+  <div class="flex flex-col md:flex-row mt-8 p-6 bg-white rounded-xl shadow-lg items-center md:items-start">
+    <div class="w-full md:w-1/4 flex-shrink-0 mb-6 md:mb-0">
+      <div class="bg-gray-200 h-80 w-full flex items-center justify-center rounded-lg text-gray-500 text-sm shadow-md">
+        웹툰 커버
+      </div>
+    </div>
+    <div class="w-full md:w-3/4 md:ml-10 text-center md:text-left">
+      <h1 class="text-4xl font-extrabold text-gray-900 mb-3"><%= @comic.title %></h1>
+      <p class="text-xl text-gray-600 mb-4">작가: <span class="font-semibold"><%= @comic.author %></span></p>
+      <p class="mt-4 text-gray-700 leading-relaxed text-lg"><%= @comic.description %></p>
+      <div class="mt-6 flex flex-wrap justify-center md:justify-start gap-3">
+        <span class="bg-green-100 text-green-800 px-4 py-2 rounded-full text-base font-medium">#판타지</span>
+        <span class="bg-blue-100 text-blue-800 px-4 py-2 rounded-full text-base font-medium">#액션</span>
+        <span class="bg-purple-100 text-purple-800 px-4 py-2 rounded-full text-base font-medium">#모험</span>
+      </div>
+    </div>
+  </div>
+
+  <ul class="mt-10 bg-white rounded-xl shadow-lg divide-y divide-gray-200">
+    <% @episodes.each do |episode| %>
+      <li class="flex justify-between items-center py-5 px-6 hover:bg-gray-50 transition duration-200 ease-in-out">
+        <a href="/webtoon/detail?titleId=<%= @comic.id %>&no=<%= episode.episode_number %>&week=tue" class="flex items-center space-x-5 group">
+          <div class="bg-gray-200 h-20 w-20 flex-shrink-0 flex items-center justify-center rounded-lg text-gray-500 text-xs shadow-sm">
+            회차 썸네일
+          </div>
+          <div>
+            <p class="font-bold text-xl text-gray-800 group-hover:text-green-600 transition duration-200 ease-in-out"><%= episode.episode_number %>화</p>
+            <p class="text-gray-500 text-sm mt-1">2025.07.18</p>
+          </div>
+        </a>
+        <% if episode.episode_number == 194 %>
+          <span class="bg-red-500 text-white text-xs font-bold px-3 py-1 rounded-full animate-pulse">UP</span>
+        <% end %>
+      </li>
+    <% end %>
+  </ul>
+</main>
