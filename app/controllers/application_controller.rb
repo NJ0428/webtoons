@@ -7,7 +7,18 @@ class ApplicationController < ActionController::Base
   private
 
   def current_user
-    @current_user ||= User.find(session[:user_id]) if session[:user_id]
+    return @current_user if defined?(@current_user)
+    
+    @current_user = if session[:user_id]
+      begin
+        User.find(session[:user_id])
+      rescue ActiveRecord::RecordNotFound
+        session[:user_id] = nil  # 잘못된 세션 정리
+        nil
+      end
+    else
+      nil
+    end
   end
 
   def logged_in?

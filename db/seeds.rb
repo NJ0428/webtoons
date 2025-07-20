@@ -2,6 +2,7 @@
 Episode.destroy_all
 Comic.destroy_all
 Novel.destroy_all
+User.destroy_all
 
 # 요일별 웹툰 데이터
 webtoons_data = [
@@ -586,6 +587,23 @@ challenge_comic = Comic.create!(challenge_data)
 end
 
 puts "✅ 베스트도전 1개, 도전만화 1개가 추가로 생성되었습니다!"
+
+# 테스트 사용자 생성
+puts "\n테스트 사용자를 생성하는 중..."
+
+test_user = User.create!(
+  name: "김웹툰",
+  nickname: "webtoon_creator",
+  email: "test@example.com",
+  password: "123456",
+  password_confirmation: "123456",
+  phone: "010-1234-5678",
+  birth_date: Date.new(1990, 5, 15),
+  gender: "male",
+  bio: "웹툰을 사랑하는 크리에이터입니다."
+)
+
+puts "✅ 테스트 사용자가 생성되었습니다: #{test_user.email}"
 
 # 웹소설 샘플 데이터 (8개)
 novels_data = [
