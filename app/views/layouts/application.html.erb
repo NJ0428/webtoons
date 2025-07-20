@@ -37,9 +37,9 @@
             <!-- 메인 네비게이션 -->
             <nav class="hidden md:flex space-x-6">
               <%= link_to "웹툰", "/webtoon", class: "text-gray-900 hover:text-purple-600 font-medium" %>
-              <a href="#" class="text-gray-700 hover:text-purple-600">베스트도전</a>
-              <a href="#" class="text-gray-700 hover:text-purple-600">도전만화</a>
-              <a href="#" class="text-gray-700 hover:text-purple-600">웹소설</a>
+              <%= link_to "베스트도전", best_challenge_path, class: "text-gray-700 hover:text-blue-600 font-medium" %>
+              <%= link_to "도전만화", challenge_path, class: "text-gray-700 hover:text-green-600 font-medium" %>
+              <%= link_to "웹소설", novels_path, class: "text-gray-700 hover:text-purple-600 font-medium" %>
             </nav>
           </div>
           

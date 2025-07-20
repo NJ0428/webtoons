@@ -1,0 +1,98 @@
+<div class="min-h-screen bg-gray-50">
+  <!-- 헤더 -->
+  <div class="bg-white shadow-sm border-b">
+    <div class="max-w-6xl mx-auto px-4 py-6">
+      <div class="flex items-center justify-between">
+        <div>
+          <h1 class="text-3xl font-bold text-gray-900"><%= @category_korean %></h1>
+          <p class="text-gray-600 mt-2">창작자들의 도전작을 만나보세요</p>
+        </div>
+        <div class="text-sm text-gray-500">
+          총 <span class="font-semibold text-blue-600"><%= @total_count %></span>개 작품
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 인기 작품 섹션 -->
+  <div class="max-w-6xl mx-auto px-4 py-8">
+    <div class="mb-8">
+      <h2 class="text-2xl font-bold text-gray-900 mb-6">인기 베스트도전</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+        <% @popular_comics.each_with_index do |comic, index| %>
+          <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow">
+            <div class="relative">
+              <img src="<%= comic.thumbnail_url %>" 
+                   alt="<%= comic.title %>" 
+                   class="w-full h-48 object-cover">
+              <% if index < 3 %>
+                <div class="absolute top-2 left-2 bg-red-500 text-white px-2 py-1 rounded text-xs font-bold">
+                  <%= index + 1 %>위
+                </div>
+              <% end %>
+              <div class="absolute top-2 right-2 bg-blue-500 text-white px-2 py-1 rounded text-xs">
+                베스트도전
+              </div>
+            </div>
+            <div class="p-4">
+              <h3 class="font-semibold text-gray-900 mb-1 line-clamp-2">
+                <%= link_to comic.title, webtoon_list_path(titleId: comic.id), 
+                    class: "hover:text-blue-600" %>
+              </h3>
+              <p class="text-sm text-gray-600 mb-2"><%= comic.author %></p>
+              <div class="flex items-center justify-between text-xs text-gray-500">
+                <span class="bg-gray-100 px-2 py-1 rounded"><%= comic.genre %></span>
+                <div class="flex items-center space-x-2">
+                  <span>⭐ <%= comic.rating %></span>
+                  <span>👁 <%= number_with_delimiter(comic.view_count) %></span>
+                </div>
+              </div>
+              <div class="mt-2 text-xs text-blue-600">
+                <%= time_ago_in_words(comic.created_at) %> 전 등록
+              </div>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    </div>
+
+    <!-- 최신 작품 섹션 -->
+    <div class="mb-8">
+      <h2 class="text-2xl font-bold text-gray-900 mb-6">최신 베스트도전</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <% @recent_comics.each do |comic| %>
+          <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow">
+            <div class="flex">
+              <img src="<%= comic.thumbnail_url %>" 
+                   alt="<%= comic.title %>" 
+                   class="w-24 h-24 object-cover">
+              <div class="flex-1 p-4">
+                <h3 class="font-semibold text-gray-900 mb-1 line-clamp-1">
+                  <%= link_to comic.title, webtoon_list_path(titleId: comic.id), 
+                      class: "hover:text-blue-600" %>
+                </h3>
+                <p class="text-sm text-gray-600 mb-2"><%= comic.author %></p>
+                <div class="flex items-center justify-between text-xs text-gray-500">
+                  <span class="bg-blue-100 text-blue-800 px-2 py-1 rounded">NEW</span>
+                  <div class="flex items-center space-x-2">
+                    <span>⭐ <%= comic.rating %></span>
+                    <span>👁 <%= number_with_delimiter(comic.view_count) %></span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    </div>
+
+    <!-- 빈 상태 -->
+    <% if @comics.empty? %>
+      <div class="text-center py-12">
+        <div class="text-gray-400 text-6xl mb-4">📚</div>
+        <h3 class="text-lg font-medium text-gray-900 mb-2">아직 베스트도전 작품이 없습니다</h3>
+        <p class="text-gray-600">곧 다양한 창작자들의 작품을 만나보실 수 있습니다.</p>
+      </div>
+    <% end %>
+  </div>
+</div>

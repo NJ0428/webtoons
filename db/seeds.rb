@@ -1,6 +1,7 @@
 # 기존 데이터 삭제 (순서 중요: Episode 먼저, Comic 나중에)
 Episode.destroy_all
 Comic.destroy_all
+Novel.destroy_all
 
 # 요일별 웹툰 데이터
 webtoons_data = [
@@ -352,7 +353,7 @@ webtoons_data = [
     description: "심슨 가족의 유쾌한 일상 이야기",
     thumbnail_url: "https://picsum.photos/300/400?random=68",
     is_new: true, rating: 8.9, view_count: 1400000, status: "ongoing"
-  }
+  },
   {
     title: "유로드로우", author: "김선욱", day_of_week: "월", genre: "스포츠",
     description: "농구를 통해 성장하는 청춘들의 이야기",
@@ -532,8 +533,203 @@ end
 
 puts "\n✅ #{Comic.count}개의 웹툰과 #{Episode.count}개의 에피소드가 생성되었습니다!"
 
-# 요일별 통계 출력
+# 베스트도전 샘플 데이터
+best_challenge_data = {
+  title: "신인 작가의 꿈", 
+  author: "김신인", 
+  day_of_week: "", 
+  genre: "드라마",
+  description: "웹툰 작가를 꿈꾸는 신인의 성장 이야기",
+  thumbnail_url: "https://picsum.photos/300/400?random=101",
+  is_new: true, 
+  rating: 8.5, 
+  view_count: 45000, 
+  status: "ongoing",
+  category: "best_challenge"
+}
+
+# 도전만화 샘플 데이터
+challenge_data = {
+  title: "일상의 소소한 행복", 
+  author: "박일상", 
+  day_of_week: "", 
+  genre: "일상",
+  description: "평범한 일상 속에서 찾는 작은 행복들",
+  thumbnail_url: "https://picsum.photos/300/400?random=102",
+  is_new: true, 
+  rating: 7.8, 
+  view_count: 12000, 
+  status: "ongoing",
+  category: "challenge"
+}
+
+puts "\n베스트도전과 도전만화 데이터를 생성하는 중..."
+
+# 베스트도전 생성
+best_challenge_comic = Comic.create!(best_challenge_data)
+10.times do |i|
+  Episode.create!(
+    title: "#{i + 1}화 - #{best_challenge_data[:title]}",
+    episode_number: i + 1,
+    comic: best_challenge_comic
+  )
+end
+
+# 도전만화 생성
+challenge_comic = Comic.create!(challenge_data)
+5.times do |i|
+  Episode.create!(
+    title: "#{i + 1}화 - #{challenge_data[:title]}",
+    episode_number: i + 1,
+    comic: challenge_comic
+  )
+end
+
+puts "✅ 베스트도전 1개, 도전만화 1개가 추가로 생성되었습니다!"
+
+# 웹소설 샘플 데이터 (8개)
+novels_data = [
+  {
+    title: "이제 사랑받을 수 있을까요?",
+    author: "마굴",
+    genre: "romance",
+    description: "30년 만에 그녀가 돌아왔다. 까만 양산을 들고서. 황제의 사랑을 받지 못한 황후가 과거로 돌아가 새로운 사랑을 찾는 이야기.",
+    thumbnail_url: "https://picsum.photos/200/280?random=201",
+    rating: 9.2,
+    view_count: 2500000,
+    status: "ongoing",
+    is_new: true,
+    category: "novel",
+    chapter_count: 85,
+    update_day: "매주 화, 목"
+  },
+  {
+    title: "내 쓰레기통이 후회하고 있다",
+    author: "리더스",
+    genre: "fantasy",
+    description: "버려진 것들이 후회하며 돌아오는 판타지 로맨스. 차가운 남주가 따뜻한 사랑을 깨달아가는 과정을 그린 작품.",
+    thumbnail_url: "https://picsum.photos/200/280?random=202",
+    rating: 8.9,
+    view_count: 1800000,
+    status: "ongoing",
+    is_new: false,
+    category: "novel",
+    chapter_count: 67,
+    update_day: "매주 월, 수, 금"
+  },
+  {
+    title: "음울한 남자",
+    author: "김음울",
+    genre: "romance",
+    description: "차가운 외면 뒤에 숨겨진 따뜻한 마음. 음울한 남자와 밝은 여자의 달콤한 로맨스가 펼쳐진다.",
+    thumbnail_url: "https://picsum.photos/200/280?random=203",
+    rating: 8.7,
+    view_count: 1950000,
+    status: "ongoing",
+    is_new: true,
+    category: "novel",
+    chapter_count: 42,
+    update_day: "매주 화, 금"
+  },
+  {
+    title: "아내를 숨겨라",
+    author: "백미경",
+    genre: "romance",
+    description: "계약결혼으로 시작된 관계가 진짜 사랑으로 발전하는 달콤한 로맨스 소설. 숨겨진 아내의 정체가 밝혀지면서 벌어지는 이야기.",
+    thumbnail_url: "https://picsum.photos/200/280?random=204",
+    rating: 9.0,
+    view_count: 2100000,
+    status: "ongoing",
+    is_new: false,
+    category: "novel",
+    chapter_count: 78,
+    update_day: "매주 월, 목"
+  },
+  {
+    title: "완벽한 위장결혼",
+    author: "이완벽",
+    genre: "romance",
+    description: "위장결혼으로 시작했지만 점점 진짜 사랑에 빠져가는 두 사람의 이야기. 완벽한 연기가 진심이 되어가는 과정을 그린다.",
+    thumbnail_url: "https://picsum.photos/200/280?random=205",
+    rating: 8.8,
+    view_count: 1650000,
+    status: "ongoing",
+    is_new: true,
+    category: "novel",
+    chapter_count: 55,
+    update_day: "매주 수, 토"
+  },
+  {
+    title: "달콤한 집착",
+    author: "설탕",
+    genre: "romance",
+    description: "달콤하지만 위험한 집착. 사랑과 소유욕 사이에서 흔들리는 두 사람의 복잡한 감정을 섬세하게 그린 작품.",
+    thumbnail_url: "https://picsum.photos/200/280?random=206",
+    rating: 8.6,
+    view_count: 1400000,
+    status: "ongoing",
+    is_new: false,
+    category: "novel",
+    chapter_count: 63,
+    update_day: "매주 화, 목, 일"
+  },
+  {
+    title: "내가 키운 너의 여름",
+    author: "정여름",
+    genre: "romance",
+    description: "어린 시절부터 함께 자란 두 사람의 성장 로맨스. 오빠 같았던 남자가 어느새 사랑하는 사람이 되어가는 이야기.",
+    thumbnail_url: "https://picsum.photos/200/280?random=207",
+    rating: 9.1,
+    view_count: 1750000,
+    status: "ongoing",
+    is_new: true,
+    category: "novel",
+    chapter_count: 48,
+    update_day: "매주 월, 수"
+  },
+  {
+    title: "감사합니다 계약남편",
+    author: "신혼",
+    genre: "romance",
+    description: "계약남편으로 시작했지만 진짜 남편이 되어가는 과정. 서로에게 감사하며 사랑을 키워가는 따뜻한 이야기.",
+    thumbnail_url: "https://picsum.photos/200/280?random=208",
+    rating: 8.9,
+    view_count: 1320000,
+    status: "ongoing",
+    is_new: false,
+    category: "novel",
+    chapter_count: 71,
+    update_day: "매주 목, 일"
+  }
+]
+
+puts "\n웹소설 데이터를 생성하는 중..."
+
+novels_data.each do |novel_data|
+  Novel.create!(novel_data)
+  print "."
+end
+
+puts "\n✅ #{Novel.count}개의 웹소설이 생성되었습니다!"
+
+# 전체 통계 출력
+puts "\n=== 전체 통계 ==="
+puts "웹툰: #{Comic.webtoons.count}개"
+puts "베스트도전: #{Comic.best_challenges.count}개"
+puts "도전만화: #{Comic.challenges.count}개"
+puts "웹소설: #{Novel.count}개"
+puts "총 에피소드: #{Episode.count}개"
+
+# 요일별 웹툰 통계 출력
+puts "\n=== 요일별 웹툰 통계 ==="
 %w[월 화 수 목 금 토 일].each do |day|
   count = Comic.where(day_of_week: day).count
   puts "#{day}요일: #{count}개 웹툰"
+end
+
+# 웹소설 장르별 통계
+puts "\n=== 웹소설 장르별 통계 ==="
+Novel.group(:genre).count.each do |genre, count|
+  genre_korean = Novel::GENRES[genre] || genre
+  puts "#{genre_korean}: #{count}개"
 end

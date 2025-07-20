@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_07_19_131805) do
+ActiveRecord::Schema[8.0].define(version: 2025_07_20_035732) do
   create_table "comics", force: :cascade do |t|
     t.string "title"
     t.string "author"
@@ -24,6 +24,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_07_19_131805) do
     t.string "status", default: "ongoing"
     t.decimal "rating", precision: 3, scale: 2, default: "0.0"
     t.integer "view_count", default: 0
+    t.string "category", default: "webtoon"
+    t.index ["category"], name: "index_comics_on_category"
     t.index ["day_of_week"], name: "index_comics_on_day_of_week"
     t.index ["genre"], name: "index_comics_on_genre"
     t.index ["status"], name: "index_comics_on_status"
@@ -36,6 +38,27 @@ ActiveRecord::Schema[8.0].define(version: 2025_07_19_131805) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["comic_id"], name: "index_episodes_on_comic_id"
+  end
+
+  create_table "novels", force: :cascade do |t|
+    t.string "title", null: false
+    t.string "author", null: false
+    t.text "description"
+    t.string "genre", null: false
+    t.string "thumbnail_url"
+    t.decimal "rating", precision: 3, scale: 2, default: "0.0"
+    t.integer "view_count", default: 0
+    t.string "status", default: "ongoing"
+    t.boolean "is_new", default: false
+    t.string "category", default: "novel"
+    t.integer "chapter_count", default: 0
+    t.string "update_day"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["category"], name: "index_novels_on_category"
+    t.index ["genre"], name: "index_novels_on_genre"
+    t.index ["rating"], name: "index_novels_on_rating"
+    t.index ["status"], name: "index_novels_on_status"
   end
 
   create_table "users", force: :cascade do |t|

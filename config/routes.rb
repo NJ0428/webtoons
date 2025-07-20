@@ -9,6 +9,10 @@ Rails.application.routes.draw do
   get "/api/webtoons/by_genre/:genre", to: "webtoons#by_genre"
   get "/search", to: "webtoons#search"
   get "/api/webtoons/search", to: "webtoons#search_api"
+  get "/best_challenge", to: "webtoons#best_challenge"
+  get "/challenge", to: "webtoons#challenge"
+  get "/novels", to: "novels#index"
+  get "/novels/:id", to: "novels#show", as: :novel
   
   # 사용자 인증 관련 라우트
   get "/login", to: "sessions#new"

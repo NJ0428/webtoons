@@ -168,6 +168,26 @@ class WebtoonsController < ApplicationController
     end
   end
 
+  # 베스트도전 페이지
+  def best_challenge
+    @comics = Comic.best_challenges.order(view_count: :desc)
+    @category = 'best_challenge'
+    @category_korean = '베스트도전'
+    @total_count = @comics.count
+    @popular_comics = @comics.limit(12)
+    @recent_comics = @comics.order(created_at: :desc).limit(6)
+  end
+
+  # 도전만화 페이지
+  def challenge
+    @comics = Comic.challenges.order(created_at: :desc)
+    @category = 'challenge'
+    @category_korean = '도전만화'
+    @total_count = @comics.count
+    @popular_comics = @comics.order(view_count: :desc).limit(12)
+    @recent_comics = @comics.limit(6)
+  end
+
   private
 
   def get_korean_day_of_week

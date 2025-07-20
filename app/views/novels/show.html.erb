@@ -1,0 +1,68 @@
+<div class="min-h-screen bg-gray-50">
+  <div class="max-w-4xl mx-auto px-4 py-8">
+    <div class="bg-white rounded-lg shadow-sm overflow-hidden">
+      <!-- 소설 정보 헤더 -->
+      <div class="p-6 border-b">
+        <div class="flex items-start space-x-6">
+          <img src="<%= @novel.thumbnail_url %>" alt="<%= @novel.title %>" class="w-32 h-40 object-cover rounded-lg shadow-md">
+          <div class="flex-1">
+            <h1 class="text-3xl font-bold text-gray-900 mb-2"><%= @novel.title %></h1>
+            <p class="text-lg text-gray-600 mb-4">작가: <%= @novel.author %></p>
+            
+            <div class="flex items-center space-x-4 mb-4">
+              <span class="bg-purple-100 text-purple-800 px-3 py-1 rounded-full text-sm font-medium">
+                <%= @novel.genre_korean %>
+              </span>
+              <% if @novel.new? %>
+                <span class="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-medium">신작</span>
+              <% end %>
+              <span class="bg-gray-100 text-gray-800 px-3 py-1 rounded-full text-sm font-medium">
+                <%= @novel.status == 'completed' ? '완결' : '연재중' %>
+              </span>
+            </div>
+            
+            <div class="flex items-center space-x-6 text-sm text-gray-600 mb-4">
+              <div class="flex items-center">
+                <span class="text-yellow-500 mr-1">⭐</span>
+                <span class="font-medium"><%= @novel.rating %></span>
+              </div>
+              <div class="flex items-center">
+                <span class="text-blue-500 mr-1">👁</span>
+                <span><%= number_with_delimiter(@novel.view_count) %></span>
+              </div>
+              <% if @novel.chapter_count > 0 %>
+                <div class="flex items-center">
+                  <span class="text-green-500 mr-1">📖</span>
+                  <span><%= @novel.chapter_count %>화</span>
+                </div>
+              <% end %>
+            </div>
+            
+            <p class="text-gray-700 leading-relaxed"><%= @novel.description %></p>
+          </div>
+        </div>
+      </div>
+      
+      <!-- 액션 버튼 -->
+      <div class="p-6 bg-gray-50">
+        <div class="flex space-x-4">
+          <button class="flex-1 bg-purple-600 text-white py-3 px-6 rounded-lg font-medium hover:bg-purple-700 transition-colors">
+            첫화부터 읽기
+          </button>
+          <button class="flex-1 bg-white border border-gray-300 text-gray-700 py-3 px-6 rounded-lg font-medium hover:bg-gray-50 transition-colors">
+            최신화 읽기
+          </button>
+          <button class="bg-white border border-gray-300 text-gray-700 py-3 px-4 rounded-lg hover:bg-gray-50 transition-colors">
+            ❤️
+          </button>
+        </div>
+      </div>
+    </div>
+    
+    <!-- 뒤로가기 버튼 -->
+    <div class="mt-6">
+      <%= link_to "← 웹소설 목록으로", novels_path, 
+          class: "inline-flex items-center text-purple-600 hover:text-purple-800 font-medium" %>
+    </div>
+  </div>
+</div>

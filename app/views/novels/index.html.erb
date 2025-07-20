@@ -1,0 +1,199 @@
+<div class="min-h-screen bg-gray-50">
+  <!-- 헤더 배너 섹션 -->
+  <div class="bg-gradient-to-r from-purple-900 via-blue-900 to-indigo-900 text-white">
+    <div class="max-w-6xl mx-auto px-4 py-12">
+      <div class="flex items-center justify-between">
+        <div class="flex-1">
+          <h1 class="text-4xl font-bold mb-4">웹소설</h1>
+          <p class="text-lg opacity-90 mb-6">다양한 장르의 흥미진진한 이야기를 만나보세요</p>
+          <div class="flex space-x-6 text-sm">
+            <div class="text-center">
+              <div class="text-2xl font-bold"><%= @total_count %></div>
+              <div class="opacity-75">전체 작품</div>
+            </div>
+            <div class="text-center">
+              <div class="text-2xl font-bold"><%= @new_novels.count %></div>
+              <div class="opacity-75">신작</div>
+            </div>
+            <div class="text-center">
+              <div class="text-2xl font-bold"><%= @popular_novels.count %></div>
+              <div class="opacity-75">인기작</div>
+            </div>
+          </div>
+        </div>
+        <div class="hidden lg:block">
+          <div class="w-64 h-40 bg-gradient-to-br from-purple-600 to-pink-600 rounded-lg flex items-center justify-center">
+            <div class="text-center">
+              <div class="text-3xl mb-2">📚</div>
+              <div class="font-semibold">새로운 이야기가</div>
+              <div class="font-semibold">기다리고 있어요</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 메인 컨텐츠 -->
+  <div class="max-w-6xl mx-auto px-4 py-8">
+    
+    <!-- 웹소설 등급 랭킹 섹션 -->
+    <div class="mb-12">
+      <div class="flex items-center justify-between mb-6">
+        <h2 class="text-2xl font-bold text-gray-900">웹소설 등급 랭킹</h2>
+        <div class="flex space-x-2">
+          <button class="px-4 py-2 bg-purple-600 text-white rounded-lg text-sm font-medium">등급순</button>
+          <button class="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg text-sm font-medium hover:bg-gray-300">조회순</button>
+        </div>
+      </div>
+      
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <!-- 왼쪽 컬럼 (1-5위) -->
+        <div class="space-y-4">
+          <% @popular_novels.first(5).each_with_index do |novel, index| %>
+            <div class="flex items-center space-x-4 bg-white p-4 rounded-lg shadow-sm hover:shadow-md transition-shadow">
+              <div class="flex-shrink-0">
+                <div class="w-8 h-8 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full flex items-center justify-center text-white font-bold text-sm">
+                  <%= index + 1 %>
+                </div>
+              </div>
+              <img src="<%= novel.thumbnail_url %>" alt="<%= novel.title %>" class="w-12 h-16 object-cover rounded">
+              <div class="flex-1 min-w-0">
+                <h3 class="font-semibold text-gray-900 truncate">
+                  <%= link_to novel.title, novel_path(novel), class: "hover:text-purple-600" %>
+                </h3>
+                <p class="text-sm text-gray-600"><%= novel.author %></p>
+                <p class="text-xs text-gray-500"><%= novel.genre_korean %></p>
+                <div class="flex items-center space-x-2 text-xs text-gray-500 mt-1">
+                  <span>⭐ <%= novel.rating %></span>
+                  <span>👁 <%= number_with_delimiter(novel.view_count) %></span>
+                </div>
+              </div>
+              <% if novel.new? %>
+                <span class="bg-green-500 text-white px-2 py-1 rounded text-xs font-medium">UP</span>
+              <% end %>
+            </div>
+          <% end %>
+        </div>
+
+        <!-- 가운데 컬럼 (6-10위) -->
+        <div class="space-y-4">
+          <% @popular_novels[5..9]&.each_with_index do |novel, index| %>
+            <div class="flex items-center space-x-4 bg-white p-4 rounded-lg shadow-sm hover:shadow-md transition-shadow">
+              <div class="flex-shrink-0">
+                <div class="w-8 h-8 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-full flex items-center justify-center text-white font-bold text-sm">
+                  <%= index + 6 %>
+                </div>
+              </div>
+              <img src="<%= novel.thumbnail_url %>" alt="<%= novel.title %>" class="w-12 h-16 object-cover rounded">
+              <div class="flex-1 min-w-0">
+                <h3 class="font-semibold text-gray-900 truncate">
+                  <%= link_to novel.title, novel_path(novel), class: "hover:text-purple-600" %>
+                </h3>
+                <p class="text-sm text-gray-600"><%= novel.author %></p>
+                <p class="text-xs text-gray-500"><%= novel.genre_korean %></p>
+                <div class="flex items-center space-x-2 text-xs text-gray-500 mt-1">
+                  <span>⭐ <%= novel.rating %></span>
+                  <span>👁 <%= number_with_delimiter(novel.view_count) %></span>
+                </div>
+              </div>
+              <% if novel.new? %>
+                <span class="bg-green-500 text-white px-2 py-1 rounded text-xs font-medium">UP</span>
+              <% end %>
+            </div>
+          <% end %>
+        </div>
+
+        <!-- 오른쪽 컬럼 (11-15위) -->
+        <div class="space-y-4">
+          <% @popular_novels[10..14]&.each_with_index do |novel, index| %>
+            <div class="flex items-center space-x-4 bg-white p-4 rounded-lg shadow-sm hover:shadow-md transition-shadow">
+              <div class="flex-shrink-0">
+                <div class="w-8 h-8 bg-gradient-to-r from-green-500 to-teal-500 rounded-full flex items-center justify-center text-white font-bold text-sm">
+                  <%= index + 11 %>
+                </div>
+              </div>
+              <img src="<%= novel.thumbnail_url %>" alt="<%= novel.title %>" class="w-12 h-16 object-cover rounded">
+              <div class="flex-1 min-w-0">
+                <h3 class="font-semibold text-gray-900 truncate">
+                  <%= link_to novel.title, novel_path(novel), class: "hover:text-purple-600" %>
+                </h3>
+                <p class="text-sm text-gray-600"><%= novel.author %></p>
+                <p class="text-xs text-gray-500"><%= novel.genre_korean %></p>
+                <div class="flex items-center space-x-2 text-xs text-gray-500 mt-1">
+                  <span>⭐ <%= novel.rating %></span>
+                  <span>👁 <%= number_with_delimiter(novel.view_count) %></span>
+                </div>
+              </div>
+              <% if novel.new? %>
+                <span class="bg-green-500 text-white px-2 py-1 rounded text-xs font-medium">UP</span>
+              <% end %>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+
+    <!-- 장르별 추천 섹션 -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
+      <!-- 로맨스 소설 -->
+      <div class="bg-white rounded-lg shadow-sm p-6">
+        <h3 class="text-xl font-bold text-gray-900 mb-4 flex items-center">
+          <span class="w-4 h-4 bg-pink-500 rounded-full mr-2"></span>
+          로맨스 소설
+        </h3>
+        <div class="space-y-3">
+          <% @romance_novels.first(4).each do |novel| %>
+            <div class="flex items-center space-x-3">
+              <img src="<%= novel.thumbnail_url %>" alt="<%= novel.title %>" class="w-10 h-12 object-cover rounded">
+              <div class="flex-1 min-w-0">
+                <h4 class="font-medium text-gray-900 truncate">
+                  <%= link_to novel.title, novel_path(novel), class: "hover:text-pink-600" %>
+                </h4>
+                <p class="text-sm text-gray-600"><%= novel.author %></p>
+                <div class="flex items-center space-x-2 text-xs text-gray-500">
+                  <span>⭐ <%= novel.rating %></span>
+                  <span>👁 <%= number_with_delimiter(novel.view_count) %></span>
+                </div>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      </div>
+
+      <!-- 판타지 소설 -->
+      <div class="bg-white rounded-lg shadow-sm p-6">
+        <h3 class="text-xl font-bold text-gray-900 mb-4 flex items-center">
+          <span class="w-4 h-4 bg-purple-500 rounded-full mr-2"></span>
+          판타지 소설
+        </h3>
+        <div class="space-y-3">
+          <% @fantasy_novels.first(4).each do |novel| %>
+            <div class="flex items-center space-x-3">
+              <img src="<%= novel.thumbnail_url %>" alt="<%= novel.title %>" class="w-10 h-12 object-cover rounded">
+              <div class="flex-1 min-w-0">
+                <h4 class="font-medium text-gray-900 truncate">
+                  <%= link_to novel.title, novel_path(novel), class: "hover:text-purple-600" %>
+                </h4>
+                <p class="text-sm text-gray-600"><%= novel.author %></p>
+                <div class="flex items-center space-x-2 text-xs text-gray-500">
+                  <span>⭐ <%= novel.rating %></span>
+                  <span>👁 <%= number_with_delimiter(novel.view_count) %></span>
+                </div>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+
+    <!-- 빈 상태 -->
+    <% if @novels.empty? %>
+      <div class="text-center py-12">
+        <div class="text-gray-400 text-6xl mb-4">📚</div>
+        <h3 class="text-lg font-medium text-gray-900 mb-2">아직 웹소설이 없습니다</h3>
+        <p class="text-gray-600">곧 다양한 장르의 흥미진진한 소설들을 만나보실 수 있습니다.</p>
+      </div>
+    <% end %>
+  </div>
+</div>
