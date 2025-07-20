@@ -2,15 +2,15 @@
   <header class="flex justify-between items-center py-4 border-b border-gray-200 shadow-sm">
     <h1 class="text-3xl font-extrabold text-gray-800 tracking-tight">웹툰</h1>
     <nav class="flex space-x-6 text-lg font-semibold">
-      <a href="#" class="text-green-600 border-b-2 border-green-600 pb-2">전체</a>
-      <a href="#" class="text-gray-700 hover:text-green-600 transition duration-300 ease-in-out pb-2">신작</a>
-      <a href="#" class="text-gray-700 hover:text-green-600 transition duration-300 ease-in-out pb-2">월</a>
-      <a href="#" class="text-gray-700 hover:text-green-600 transition duration-300 ease-in-out pb-2">화</a>
-      <a href="#" class="text-gray-700 hover:text-green-600 transition duration-300 ease-in-out pb-2">수</a>
-      <a href="#" class="text-gray-700 hover:text-green-600 transition duration-300 ease-in-out pb-2">목</a>
-      <a href="#" class="text-gray-700 hover:text-green-600 transition duration-300 ease-in-out pb-2">금</a>
-      <a href="#" class="text-gray-700 hover:text-green-600 transition duration-300 ease-in-out pb-2">토</a>
-      <a href="#" class="text-gray-700 hover:text-green-600 transition duration-300 ease-in-out pb-2">일</a>
+      <a href="#" onclick="showAllComics()" class="tab-link text-gray-700 hover:text-green-600 transition duration-300 ease-in-out pb-2 cursor-pointer">전체</a>
+      <a href="#" onclick="showNewComics()" class="tab-link text-gray-700 hover:text-green-600 transition duration-300 ease-in-out pb-2 cursor-pointer">신작</a>
+      <a href="#" onclick="filterByDay('월')" class="tab-link <%= @current_day == '월' ? 'text-green-600 border-b-2 border-green-600' : 'text-gray-700 hover:text-green-600' %> transition duration-300 ease-in-out pb-2 cursor-pointer">월</a>
+      <a href="#" onclick="filterByDay('화')" class="tab-link <%= @current_day == '화' ? 'text-green-600 border-b-2 border-green-600' : 'text-gray-700 hover:text-green-600' %> transition duration-300 ease-in-out pb-2 cursor-pointer">화</a>
+      <a href="#" onclick="filterByDay('수')" class="tab-link <%= @current_day == '수' ? 'text-green-600 border-b-2 border-green-600' : 'text-gray-700 hover:text-green-600' %> transition duration-300 ease-in-out pb-2 cursor-pointer">수</a>
+      <a href="#" onclick="filterByDay('목')" class="tab-link <%= @current_day == '목' ? 'text-green-600 border-b-2 border-green-600' : 'text-gray-700 hover:text-green-600' %> transition duration-300 ease-in-out pb-2 cursor-pointer">목</a>
+      <a href="#" onclick="filterByDay('금')" class="tab-link <%= @current_day == '금' ? 'text-green-600 border-b-2 border-green-600' : 'text-gray-700 hover:text-green-600' %> transition duration-300 ease-in-out pb-2 cursor-pointer">금</a>
+      <a href="#" onclick="filterByDay('토')" class="tab-link <%= @current_day == '토' ? 'text-green-600 border-b-2 border-green-600' : 'text-gray-700 hover:text-green-600' %> transition duration-300 ease-in-out pb-2 cursor-pointer">토</a>
+      <a href="#" onclick="filterByDay('일')" class="tab-link <%= @current_day == '일' ? 'text-green-600 border-b-2 border-green-600' : 'text-gray-700 hover:text-green-600' %> transition duration-300 ease-in-out pb-2 cursor-pointer">일</a>
     </nav>
   </header>
 
@@ -48,4 +48,191 @@
       </div>
     <% end %>
   </div>
+
+  <!-- 로딩 스피너 -->
+  <div id="loading-spinner" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+    <div class="bg-white rounded-lg p-6 flex items-center space-x-3">
+      <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-green-600"></div>
+      <span class="text-gray-700">로딩 중...</span>
+    </div>
+  </div>
 </main>
+
+<script>
+// 전역 변수
+let allComics = [];
+let currentFilter = '<%= @current_day %>';
+
+// 페이지 로드 시 초기화
+document.addEventListener('DOMContentLoaded', function() {
+  // 현재 표시된 웹툰들을 allComics에 저장
+  loadAllComics();
+  
+  // 현재 요일 탭 활성화
+  setActiveTab(currentFilter);
+});
+
+// 모든 웹툰 데이터 로드
+async function loadAllComics() {
+  try {
+    showLoading(true);
+    
+    // 모든 요일의 웹툰 데이터를 가져오기
+    const days = ['월', '화', '수', '목', '금', '토', '일'];
+    allComics = [];
+    
+    for (const day of days) {
+      const response = await fetch(`/api/webtoons/by_day/${day}`);
+      if (response.ok) {
+        const data = await response.json();
+        allComics = allComics.concat(data.map(comic => ({...comic, dayOfWeek: day})));
+      }
+    }
+    
+    showLoading(false);
+  } catch (error) {
+    console.error('웹툰 데이터 로드 실패:', error);
+    showLoading(false);
+  }
+}
+
+// 요일별 필터링
+async function filterByDay(day) {
+  try {
+    showLoading(true);
+    
+    const response = await fetch(`/api/webtoons/by_day/${day}`);
+    if (response.ok) {
+      const comics = await response.json();
+      displayComics(comics);
+      setActiveTab(day);
+      currentFilter = day;
+    }
+    
+    showLoading(false);
+  } catch (error) {
+    console.error('웹툰 필터링 실패:', error);
+    showLoading(false);
+  }
+}
+
+// 전체 웹툰 표시
+function showAllComics() {
+  if (allComics.length > 0) {
+    displayComics(allComics);
+    setActiveTab('전체');
+    currentFilter = '전체';
+  } else {
+    // 데이터가 없으면 다시 로드
+    loadAllComics().then(() => {
+      displayComics(allComics);
+      setActiveTab('전체');
+      currentFilter = '전체';
+    });
+  }
+}
+
+// 신작 웹툰 표시
+function showNewComics() {
+  const newComics = allComics.filter(comic => comic.isNew);
+  displayComics(newComics);
+  setActiveTab('신작');
+  currentFilter = '신작';
+}
+
+// 웹툰 목록 표시
+function displayComics(comics) {
+  const container = document.querySelector('.grid.grid-cols-5');
+  
+  if (comics.length === 0) {
+    container.innerHTML = `
+      <div class="col-span-5 text-center py-12">
+        <div class="text-gray-400 text-6xl mb-4">📚</div>
+        <h3 class="text-lg font-medium text-gray-900 mb-2">웹툰이 없습니다</h3>
+        <p class="text-gray-600">다른 요일을 선택해보세요.</p>
+      </div>
+    `;
+    return;
+  }
+  
+  const thumbnailImages = [
+    "https://picsum.photos/200/300?random=1",
+    "https://picsum.photos/200/300?random=2", 
+    "https://picsum.photos/200/300?random=3",
+    "https://picsum.photos/200/300?random=4",
+    "https://picsum.photos/200/300?random=5",
+    "https://picsum.photos/200/300?random=6",
+    "https://picsum.photos/200/300?random=7",
+    "https://picsum.photos/200/300?random=8",
+    "https://picsum.photos/200/300?random=9",
+    "https://picsum.photos/200/300?random=10"
+  ];
+  
+  container.innerHTML = comics.map((comic, index) => {
+    const currentImage = thumbnailImages[index % thumbnailImages.length];
+    return `
+      <div class="text-center bg-white rounded-lg shadow-md hover:shadow-xl transition duration-300 ease-in-out transform hover:-translate-y-1 overflow-hidden">
+        <a href="/webtoon/list?titleId=${comic.id}&tab=tue">
+          <div class="h-64 w-full overflow-hidden rounded-t-lg">
+            <img src="${comic.thumbnail || currentImage}" 
+                 alt="${comic.title} 썸네일" 
+                 class="w-full h-full object-cover hover:scale-105 transition duration-300 ease-in-out"
+                 loading="lazy">
+          </div>
+          <div class="p-4">
+            <p class="mt-2 font-bold text-lg text-gray-800 truncate">${comic.title}</p>
+            <p class="text-sm text-gray-600">${comic.author}</p>
+            ${comic.isNew ? '<span class="inline-block bg-red-500 text-white text-xs px-2 py-1 rounded mt-1">NEW</span>' : ''}
+            ${comic.dayOfWeek ? `<p class="text-xs text-gray-500 mt-1">${comic.dayOfWeek}요일</p>` : ''}
+          </div>
+        </a>
+      </div>
+    `;
+  }).join('');
+}
+
+// 활성 탭 설정
+function setActiveTab(activeTab) {
+  // 모든 탭 비활성화
+  document.querySelectorAll('.tab-link').forEach(tab => {
+    tab.classList.remove('text-green-600', 'border-b-2', 'border-green-600');
+    tab.classList.add('text-gray-700');
+  });
+  
+  // 활성 탭 찾기 및 활성화
+  const tabs = document.querySelectorAll('.tab-link');
+  tabs.forEach(tab => {
+    const tabText = tab.textContent.trim();
+    if (tabText === activeTab) {
+      tab.classList.remove('text-gray-700');
+      tab.classList.add('text-green-600', 'border-b-2', 'border-green-600');
+    }
+  });
+}
+
+// 로딩 스피너 표시/숨김
+function showLoading(show) {
+  const spinner = document.getElementById('loading-spinner');
+  if (show) {
+    spinner.classList.remove('hidden');
+  } else {
+    spinner.classList.add('hidden');
+  }
+}
+
+// 키보드 단축키 (선택사항)
+document.addEventListener('keydown', function(e) {
+  if (e.altKey) {
+    switch(e.key) {
+      case '1': filterByDay('월'); break;
+      case '2': filterByDay('화'); break;
+      case '3': filterByDay('수'); break;
+      case '4': filterByDay('목'); break;
+      case '5': filterByDay('금'); break;
+      case '6': filterByDay('토'); break;
+      case '7': filterByDay('일'); break;
+      case '0': showAllComics(); break;
+    }
+  }
+});
+</script>

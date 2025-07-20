@@ -13,7 +13,16 @@ class WebtoonsController < ApplicationController
   end
 
   def webtoon
-    @comics = Comic.all.order(:title)
+    # 오늘 요일의 웹툰을 기본으로 표시
+    today = get_korean_day_of_week
+    @comics = Comic.where(day_of_week: today).order(:title)
+    @current_day = today
+    
+    # 인기 급상승 웹툰 (조회수 기준 상위 10개)
+    @trending_comics = Comic.order(view_count: :desc).limit(10)
+    
+    # 완결 웹툰 (상태가 완결인 웹툰들 중 평점 높은 순)
+    @completed_comics = Comic.where(status: 'completed').order(rating: :desc).limit(5)
   end
 
   def webtoon_list
