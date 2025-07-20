@@ -15,11 +15,30 @@
   </header>
 
   <div class="grid grid-cols-5 gap-x-6 gap-y-10 mt-10">
-    <% @comics.each do |comic| %>
+    <% @comics.each_with_index do |comic, index| %>
+      <% 
+        # 임시 썸네일 이미지 URL 배열
+        thumbnail_images = [
+          "https://picsum.photos/200/300?random=1",
+          "https://picsum.photos/200/300?random=2", 
+          "https://picsum.photos/200/300?random=3",
+          "https://picsum.photos/200/300?random=4",
+          "https://picsum.photos/200/300?random=5",
+          "https://picsum.photos/200/300?random=6",
+          "https://picsum.photos/200/300?random=7",
+          "https://picsum.photos/200/300?random=8",
+          "https://picsum.photos/200/300?random=9",
+          "https://picsum.photos/200/300?random=10"
+        ]
+        current_image = thumbnail_images[index % thumbnail_images.length]
+      %>
       <div class="text-center bg-white rounded-lg shadow-md hover:shadow-xl transition duration-300 ease-in-out transform hover:-translate-y-1 overflow-hidden">
         <a href="/webtoon/list?titleId=<%= comic.id %>&tab=tue">
-          <div class="bg-gray-200 h-64 w-full flex items-center justify-center rounded-t-lg text-gray-500 text-sm">
-            웹툰 썸네일
+          <div class="h-64 w-full overflow-hidden rounded-t-lg">
+            <img src="<%= current_image %>" 
+                 alt="<%= comic.title %> 썸네일" 
+                 class="w-full h-full object-cover hover:scale-105 transition duration-300 ease-in-out"
+                 loading="lazy">
           </div>
           <div class="p-4">
             <p class="mt-2 font-bold text-lg text-gray-800 truncate"><%= comic.title %></p>

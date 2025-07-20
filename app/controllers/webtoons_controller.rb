@@ -4,6 +4,12 @@ class WebtoonsController < ApplicationController
     today = get_korean_day_of_week
     @comics = Comic.where(day_of_week: today).order(:title)
     @current_day = today
+    
+    # 인기 급상승 웹툰 (조회수 기준 상위 10개)
+    @trending_comics = Comic.order(view_count: :desc).limit(10)
+    
+    # 완결 웹툰 (상태가 완결인 웹툰들 중 평점 높은 순)
+    @completed_comics = Comic.where(status: 'completed').order(rating: :desc).limit(5)
   end
 
   def webtoon
@@ -35,6 +41,24 @@ class WebtoonsController < ApplicationController
         rating: comic.rating,
         viewCount: comic.view_count,
         genre: comic.genre
+      }
+    }
+  end
+
+  # AJAX API for trending webtoons
+  def trending
+    trending_comics = Comic.order(view_count: :desc).limit(10)
+    
+    render json: trending_comics.map.with_index { |comic, index|
+      {
+        id: comic.id,
+        title: comic.title,
+        author: comic.author,
+        rating: comic.rating,
+        viewCount: comic.view_count,
+        dayOfWeek: comic.day_of_week,
+        rank: index + 1,
+        isTopThree: index < 3
       }
     }
   end

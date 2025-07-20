@@ -30,11 +30,31 @@
     <nav class="bg-white shadow-sm border-b">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between h-16">
-          <div class="flex items-center">
-            <%= link_to "웹툰", root_path, class: "text-xl font-bold text-gray-900" %>
+          <!-- 로고 및 메인 메뉴 -->
+          <div class="flex items-center space-x-8">
+            <%= link_to "웹툰", root_path, class: "text-xl font-bold text-purple-600" %>
+            
+            <!-- 메인 네비게이션 -->
+            <nav class="hidden md:flex space-x-6">
+              <%= link_to "웹툰", "/webtoon", class: "text-gray-900 hover:text-purple-600 font-medium" %>
+              <a href="#" class="text-gray-700 hover:text-purple-600">베스트도전</a>
+              <a href="#" class="text-gray-700 hover:text-purple-600">도전만화</a>
+              <a href="#" class="text-gray-700 hover:text-purple-600">웹소설</a>
+            </nav>
           </div>
           
+          <!-- 검색 및 사용자 메뉴 -->
           <div class="flex items-center space-x-4">
+            <!-- 검색 -->
+            <div class="relative hidden md:block">
+              <input type="text" placeholder="제목/작가로 검색" 
+                     class="w-64 pl-10 pr-4 py-2 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-purple-500">
+              <svg class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd"></path>
+              </svg>
+            </div>
+            
+            <!-- 사용자 메뉴 -->
             <% if logged_in? %>
               <span class="text-gray-700">안녕하세요, <%= current_user.name %>님!</span>
               <%= link_to "프로필", profile_path, class: "text-gray-600 hover:text-gray-900" %>

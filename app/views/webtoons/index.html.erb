@@ -1,34 +1,4 @@
-<!-- 상단 네비게이션 -->
-<header class="bg-white border-b border-gray-200 sticky top-0 z-50">
-  <div class="max-w-7xl mx-auto px-4">
-    <div class="flex justify-between items-center h-16">
-      <!-- 로고 -->
-      <div class="flex items-center">
-        <h1 class="text-2xl font-bold text-purple-600">웹툰</h1>
-      </div>
-      
-      <!-- 메인 네비게이션 -->
-      <nav class="hidden md:flex space-x-8">
-        <a href="/webtoon" class="text-gray-900 hover:text-purple-600 font-medium">웹툰</a>
-        <a href="#" class="text-gray-700 hover:text-purple-600">베스트도전</a>
-        <a href="#" class="text-gray-700 hover:text-purple-600">도전만화</a>
-        <a href="#" class="text-gray-700 hover:text-purple-600">웹소설</a>
-      </nav>
-      
-      <!-- 검색 및 유틸리티 -->
-      <div class="flex items-center space-x-4">
-        <div class="relative">
-          <input type="text" placeholder="제목/작가로 검색" 
-                 class="w-64 pl-10 pr-4 py-2 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-purple-500">
-          <svg class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-            <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd"></path>
-          </svg>
-        </div>
-        <button class="text-gray-700 hover:text-purple-600">로그인</button>
-      </div>
-    </div>
-  </div>
-</header>
+
 
 <main class="max-w-7xl mx-auto px-4 py-6">
 
@@ -92,14 +62,35 @@
           인기 급상승
         </h3>
         <ul class="space-y-3">
-          <% 10.times do |i| %>
-            <li class="flex items-center hover:bg-gray-50 p-2 rounded cursor-pointer">
-              <span class="font-bold text-lg mr-3 w-6 text-center <%= i < 3 ? 'text-red-500' : 'text-gray-500' %>">
-                <%= i + 1 %>
+          <% @trending_comics.each_with_index do |comic, index| %>
+            <li class="flex items-center hover:bg-gray-50 p-2 rounded cursor-pointer transition-colors duration-200"
+                onclick="location.href='/webtoon/list?titleId=<%= comic.id %>&tab=<%= comic.day_of_week %>'">
+              <span class="font-bold text-lg mr-3 w-6 text-center <%= index < 3 ? 'text-red-500' : 'text-gray-500' %>">
+                <%= index + 1 %>
               </span>
-              <div class="flex-1">
-                <p class="text-sm font-medium text-gray-900">웹툰 제목 <%= i + 1 %></p>
-                <p class="text-xs text-gray-500">작가명</p>
+              <div class="w-10 h-12 rounded mr-3 flex-shrink-0 overflow-hidden">
+                <img src="https://picsum.photos/40/48?random=<%= comic.id + 200 %>" 
+                     alt="<%= comic.title %>" 
+                     class="w-full h-full object-cover">
+              </div>
+              <div class="flex-1 min-w-0">
+                <p class="text-sm font-medium text-gray-900 truncate"><%= comic.title %></p>
+                <p class="text-xs text-gray-500"><%= comic.author %></p>
+                <div class="flex items-center mt-1">
+                  <span class="text-xs text-green-600 font-medium">
+                    ⭐ <%= comic.rating %>
+                  </span>
+                  <span class="text-xs text-gray-400 ml-2">
+                    👁 <%= number_with_delimiter(comic.view_count) %>
+                  </span>
+                </div>
+              </div>
+              <div class="flex items-center">
+                <% if index < 3 %>
+                  <span class="text-red-500 text-xs">🔥</span>
+                <% elsif comic.view_count > 100000 %>
+                  <span class="text-orange-500 text-xs">📈</span>
+                <% end %>
               </div>
             </li>
           <% end %>
@@ -113,14 +104,45 @@
           완결 웹툰
         </h3>
         <div class="space-y-3">
-          <% 5.times do |i| %>
-            <div class="flex items-center hover:bg-gray-50 p-2 rounded cursor-pointer">
-              <div class="w-12 h-16 bg-gray-200 rounded mr-3 flex-shrink-0"></div>
-              <div class="flex-1">
-                <p class="text-sm font-medium text-gray-900">완결 웹툰 <%= i + 1 %></p>
-                <p class="text-xs text-gray-500">작가명</p>
+          <% if @completed_comics&.any? %>
+            <% @completed_comics.each do |comic| %>
+              <div class="flex items-center hover:bg-gray-50 p-2 rounded cursor-pointer transition-colors duration-200"
+                   onclick="location.href='/webtoon/list?titleId=<%= comic.id %>&tab=<%= comic.day_of_week %>'">
+                <div class="w-12 h-16 rounded mr-3 flex-shrink-0 overflow-hidden">
+                  <img src="https://picsum.photos/48/64?random=<%= comic.id + 300 %>" 
+                       alt="<%= comic.title %>" 
+                       class="w-full h-full object-cover">
+                </div>
+                <div class="flex-1 min-w-0">
+                  <p class="text-sm font-medium text-gray-900 truncate"><%= comic.title %></p>
+                  <p class="text-xs text-gray-500"><%= comic.author %></p>
+                  <div class="flex items-center mt-1">
+                    <span class="text-xs text-blue-600 font-medium">
+                      ⭐ <%= comic.rating %>
+                    </span>
+                    <span class="text-xs text-gray-400 ml-2">완결</span>
+                  </div>
+                </div>
               </div>
-            </div>
+            <% end %>
+          <% else %>
+            <% 5.times do |i| %>
+              <div class="flex items-center hover:bg-gray-50 p-2 rounded cursor-pointer">
+                <div class="w-12 h-16 rounded mr-3 flex-shrink-0 overflow-hidden">
+                  <img src="https://picsum.photos/48/64?random=<%= 100 + i %>" 
+                       alt="완결 웹툰 <%= i + 1 %>" 
+                       class="w-full h-full object-cover">
+                </div>
+                <div class="flex-1">
+                  <p class="text-sm font-medium text-gray-900">완결 웹툰 <%= i + 1 %></p>
+                  <p class="text-xs text-gray-500">작가명</p>
+                  <div class="flex items-center mt-1">
+                    <span class="text-xs text-blue-600 font-medium">⭐ 4.<%= rand(1..9) %></span>
+                    <span class="text-xs text-gray-400 ml-2">완결</span>
+                  </div>
+                </div>
+              </div>
+            <% end %>
           <% end %>
         </div>
       </div>
@@ -131,10 +153,22 @@
   <section class="mt-12">
     <h2 class="text-2xl font-bold text-gray-900 mb-6">장르별 추천</h2>
     <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
-      <% %w[로맨스 액션 판타지 일상 개그 스릴러].each do |genre| %>
-        <div class="bg-white border border-gray-200 rounded-lg p-4 text-center hover:shadow-md transition-shadow cursor-pointer">
-          <div class="w-16 h-16 bg-gray-200 rounded-full mx-auto mb-3"></div>
-          <p class="font-medium text-gray-900"><%= genre %></p>
+      <% 
+        genres = [
+          { name: '로맨스', emoji: '💕', color: 'from-pink-400 to-red-400' },
+          { name: '액션', emoji: '⚔️', color: 'from-orange-400 to-red-500' },
+          { name: '판타지', emoji: '🔮', color: 'from-purple-400 to-indigo-500' },
+          { name: '일상', emoji: '☕', color: 'from-green-400 to-blue-400' },
+          { name: '개그', emoji: '😂', color: 'from-yellow-400 to-orange-400' },
+          { name: '스릴러', emoji: '🔪', color: 'from-gray-600 to-black' }
+        ]
+      %>
+      <% genres.each do |genre| %>
+        <div class="bg-white border border-gray-200 rounded-lg p-4 text-center hover:shadow-md transition-shadow cursor-pointer group">
+          <div class="w-16 h-16 bg-gradient-to-br <%= genre[:color] %> rounded-full mx-auto mb-3 flex items-center justify-center text-2xl group-hover:scale-110 transition-transform duration-200">
+            <%= genre[:emoji] %>
+          </div>
+          <p class="font-medium text-gray-900 group-hover:text-purple-600 transition-colors"><%= genre[:name] %></p>
         </div>
       <% end %>
     </div>
@@ -173,6 +207,12 @@ document.addEventListener('DOMContentLoaded', function() {
   
   // 초기 웹툰 목록 표시 (서버에서 이미 로드된 데이터 사용)
   displayInitialWebtoons();
+  
+  // 인기 급상승 새로고침 버튼 이벤트 추가
+  addTrendingRefreshButton();
+  
+  // 5분마다 인기 급상승 자동 업데이트
+  setInterval(loadTrendingWebtoons, 5 * 60 * 1000);
 });
 
 // 초기 웹툰 목록 표시 (서버에서 전달받은 데이터)
@@ -247,19 +287,13 @@ function displayWebtoons(comics, day) {
     return;
   }
   
-  grid.innerHTML = comics.map(comic => `
+  grid.innerHTML = comics.map((comic, index) => `
     <div class="group cursor-pointer">
       <a href="/webtoon/list?titleId=${comic.id}&tab=${day}" class="block">
         <div class="relative overflow-hidden rounded-lg mb-3">
-          ${comic.thumbnail ? 
-            `<img src="${comic.thumbnail}" alt="${comic.title}" class="aspect-[3/4] w-full object-cover group-hover:scale-105 transition-transform duration-200" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-             <div class="aspect-[3/4] bg-gray-200 items-center justify-center text-gray-500 text-sm group-hover:scale-105 transition-transform duration-200" style="display:none;">
-               웹툰 썸네일
-             </div>` :
-            `<div class="aspect-[3/4] bg-gray-200 flex items-center justify-center text-gray-500 text-sm group-hover:scale-105 transition-transform duration-200">
-               웹툰 썸네일
-             </div>`
-          }
+          <img src="https://picsum.photos/200/300?random=${comic.id || index + 50}" 
+               alt="${comic.title}" 
+               class="aspect-[3/4] w-full object-cover group-hover:scale-105 transition-transform duration-200">
           ${comic.isNew ? '<div class="absolute top-2 left-2 bg-red-500 text-white text-xs px-2 py-1 rounded">UP</div>' : ''}
           <div class="absolute bottom-2 right-2 bg-black bg-opacity-70 text-white text-xs px-2 py-1 rounded">
             ⭐ ${comic.rating}
@@ -283,5 +317,66 @@ function formatViewCount(count) {
     return Math.floor(count / 100) / 10 + 'K';
   }
   return count.toString();
+}
+
+// 인기 급상승 새로고침 버튼 추가
+function addTrendingRefreshButton() {
+  const trendingHeader = document.querySelector('.bg-white .font-bold');
+  if (trendingHeader && trendingHeader.textContent.includes('인기 급상승')) {
+    const refreshButton = document.createElement('button');
+    refreshButton.innerHTML = '🔄';
+    refreshButton.className = 'ml-2 text-gray-400 hover:text-gray-600 transition-colors duration-200 text-sm';
+    refreshButton.title = '인기 급상승 새로고침';
+    refreshButton.onclick = loadTrendingWebtoons;
+    trendingHeader.appendChild(refreshButton);
+  }
+}
+
+// 인기 급상승 웹툰 로드
+async function loadTrendingWebtoons() {
+  try {
+    const response = await fetch('/api/webtoons/trending');
+    const trendingComics = await response.json();
+    
+    updateTrendingList(trendingComics);
+  } catch (error) {
+    console.error('인기 급상승 데이터 로드 실패:', error);
+  }
+}
+
+// 인기 급상승 목록 업데이트
+function updateTrendingList(trendingComics) {
+  const trendingList = document.querySelector('.bg-white ul');
+  if (!trendingList) return;
+  
+  trendingList.innerHTML = trendingComics.map(comic => `
+    <li class="flex items-center hover:bg-gray-50 p-2 rounded cursor-pointer transition-colors duration-200"
+        onclick="location.href='/webtoon/list?titleId=${comic.id}&tab=${comic.dayOfWeek}'">
+      <span class="font-bold text-lg mr-3 w-6 text-center ${comic.isTopThree ? 'text-red-500' : 'text-gray-500'}">
+        ${comic.rank}
+      </span>
+      <div class="w-10 h-12 rounded mr-3 flex-shrink-0 overflow-hidden">
+        <img src="https://picsum.photos/40/48?random=${comic.id + 200}" 
+             alt="${comic.title}" 
+             class="w-full h-full object-cover">
+      </div>
+      <div class="flex-1 min-w-0">
+        <p class="text-sm font-medium text-gray-900 truncate">${comic.title}</p>
+        <p class="text-xs text-gray-500">${comic.author}</p>
+        <div class="flex items-center mt-1">
+          <span class="text-xs text-green-600 font-medium">
+            ⭐ ${comic.rating}
+          </span>
+          <span class="text-xs text-gray-400 ml-2">
+            👁 ${formatViewCount(comic.viewCount)}
+          </span>
+        </div>
+      </div>
+      <div class="flex items-center">
+        ${comic.isTopThree ? '<span class="text-red-500 text-xs">🔥</span>' : 
+          (comic.viewCount > 100000 ? '<span class="text-orange-500 text-xs">📈</span>' : '')}
+      </div>
+    </li>
+  `).join('');
 }
 </script>

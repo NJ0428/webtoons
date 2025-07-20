@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_07_19_091037) do
+ActiveRecord::Schema[8.0].define(version: 2025_07_19_131805) do
   create_table "comics", force: :cascade do |t|
     t.string "title"
     t.string "author"
@@ -44,6 +44,13 @@ ActiveRecord::Schema[8.0].define(version: 2025_07_19_091037) do
     t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "nickname"
+    t.string "phone"
+    t.date "birth_date"
+    t.string "gender"
+    t.string "profile_image"
+    t.text "bio"
+    t.string "salt"
   end
 
   add_foreign_key "episodes", "comics"

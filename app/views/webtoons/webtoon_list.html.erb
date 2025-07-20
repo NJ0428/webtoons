@@ -1,8 +1,10 @@
 <main class="container mx-auto mt-8 px-5 font-sans antialiased">
   <div class="flex flex-col md:flex-row mt-8 p-6 bg-white rounded-xl shadow-lg items-center md:items-start">
     <div class="w-full md:w-1/4 flex-shrink-0 mb-6 md:mb-0">
-      <div class="bg-gray-200 h-80 w-full flex items-center justify-center rounded-lg text-gray-500 text-sm shadow-md">
-        웹툰 커버
+      <div class="h-80 w-full overflow-hidden rounded-lg shadow-md">
+        <img src="https://picsum.photos/300/400?random=<%= @comic.id %>" 
+             alt="<%= @comic.title %> 커버" 
+             class="w-full h-full object-cover">
       </div>
     </div>
     <div class="w-full md:w-3/4 md:ml-10 text-center md:text-left">
@@ -21,8 +23,10 @@
     <% @episodes.each do |episode| %>
       <li class="flex justify-between items-center py-5 px-6 hover:bg-gray-50 transition duration-200 ease-in-out">
         <a href="/webtoon/detail?titleId=<%= @comic.id %>&no=<%= episode.episode_number %>&week=tue" class="flex items-center space-x-5 group">
-          <div class="bg-gray-200 h-20 w-20 flex-shrink-0 flex items-center justify-center rounded-lg text-gray-500 text-xs shadow-sm">
-            회차 썸네일
+          <div class="h-20 w-20 flex-shrink-0 overflow-hidden rounded-lg shadow-sm">
+            <img src="https://picsum.photos/80/80?random=<%= episode.id || episode.episode_number %>" 
+                 alt="<%= episode.episode_number %>화 썸네일" 
+                 class="w-full h-full object-cover group-hover:scale-105 transition duration-200 ease-in-out">
           </div>
           <div>
             <p class="font-bold text-xl text-gray-800 group-hover:text-green-600 transition duration-200 ease-in-out"><%= episode.episode_number %>화</p>
