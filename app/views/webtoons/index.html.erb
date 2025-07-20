@@ -42,7 +42,8 @@
       <div class="flex bg-gray-100 rounded-lg p-1">
         <% 
           days = %w[월 화 수 목 금 토 일]
-          today_index = 5  # 토요일 (0=월요일, 5=토요일)
+          # 실제 오늘 요일의 인덱스 계산 (0=월요일, 6=일요일)
+          today_index = days.index(@current_day) || 6
         %>
         <% days.each_with_index do |day, index| %>
           <button onclick="switchDay('<%= day %>', this)" 
@@ -60,7 +61,7 @@
     <!-- 웹툰 그리드 -->
     <div class="lg:col-span-3">
       <div class="flex justify-between items-center mb-6">
-        <h2 id="day-title" class="text-2xl font-bold text-gray-900">토요일 웹툰</h2>
+        <h2 id="day-title" class="text-2xl font-bold text-gray-900"><%= @current_day %>요일 웹툰</h2>
         <a href="/webtoon" class="text-purple-600 hover:text-purple-700 font-medium flex items-center">
           더보기
           <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
