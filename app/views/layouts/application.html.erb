@@ -62,7 +62,7 @@
             
             <!-- 사용자 메뉴 -->
             <% if logged_in? %>
-              <span class="text-gray-700">안녕하세요, <%= current_user.name %>님!</span>
+              <span class="text-gray-700"> <%= current_user.name %>님!</span>
               <%= link_to "프로필", profile_path, class: "text-gray-600 hover:text-gray-900" %>
               <%= link_to "로그아웃", logout_path, method: :delete, 
                     class: "bg-red-600 hover:bg-red-700 text-white px-3 py-2 rounded-md text-sm font-medium",
