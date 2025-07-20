@@ -1,0 +1,254 @@
+<main class="max-w-7xl mx-auto px-4 py-6">
+  <!-- 장르 헤더 -->
+  <section class="mb-8">
+    <div class="bg-gradient-to-r from-purple-500 to-violet-600 rounded-lg p-8 text-white">
+      <div class="flex items-center justify-between">
+        <div>
+          <h1 class="text-4xl font-bold mb-2"><%= @genre_korean %> 웹툰</h1>
+          <p class="text-xl opacity-90">총 <%= @total_count %>개의 작품 • 평균 평점 ⭐ <%= @avg_rating %></p>
+        </div>
+        <div class="text-right">
+          <div class="text-6xl opacity-50">
+            <% 
+              genre_emoji = {
+                '로맨스' => '💕',
+                '액션' => '⚔️',
+                '판타지' => '🔮',
+                '일상' => '☕',
+                '개그' => '😂',
+                '스릴러' => '🔪',
+                '드라마' => '🎭',
+                '공포' => '👻',
+                '스포츠' => '⚽',
+                '사극' => '🏛️'
+              }
+            %>
+            <%= genre_emoji[@genre_korean] || '📚' %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 정렬 옵션 -->
+  <section class="mb-6">
+    <div class="flex justify-between items-center">
+      <h2 class="text-2xl font-bold text-gray-900">전체 작품</h2>
+      <div class="flex space-x-2">
+        <button onclick="sortWebtoons('popular', this)" 
+                class="sort-btn px-4 py-2 rounded-full text-sm font-medium transition-colors bg-purple-600 text-white">
+          인기순
+        </button>
+        <button onclick="sortWebtoons('rating', this)" 
+                class="sort-btn px-4 py-2 rounded-full text-sm font-medium transition-colors bg-gray-200 text-gray-700 hover:bg-gray-300">
+          평점순
+        </button>
+        <button onclick="sortWebtoons('recent', this)" 
+                class="sort-btn px-4 py-2 rounded-full text-sm font-medium transition-colors bg-gray-200 text-gray-700 hover:bg-gray-300">
+          최신순
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- 웹툰 그리드 -->
+  <section class="mb-12">
+    <div id="webtoon-grid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+      <!-- 웹툰 목록이 여기에 동적으로 로드됩니다 -->
+    </div>
+  </section>
+
+  <!-- 추천 섹션 -->
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
+    <!-- 인기 작품 -->
+    <section>
+      <h3 class="text-xl font-bold text-gray-900 mb-4 flex items-center">
+        <span class="text-red-500 mr-2">🔥</span>
+        인기 <%= @genre_korean %> 웹툰
+      </h3>
+      <div class="bg-white border border-gray-200 rounded-lg p-6">
+        <div class="space-y-4">
+          <% @popular_comics.each_with_index do |comic, index| %>
+            <div class="flex items-center hover:bg-gray-50 p-3 rounded cursor-pointer transition-colors duration-200"
+                 onclick="location.href='/webtoon/list?titleId=<%= comic.id %>&tab=<%= comic.day_of_week %>'">
+              <span class="font-bold text-lg mr-3 w-6 text-center <%= index < 3 ? 'text-red-500' : 'text-gray-500' %>">
+                <%= index + 1 %>
+              </span>
+              <div class="w-12 h-16 rounded mr-3 flex-shrink-0 overflow-hidden">
+                <img src="https://picsum.photos/48/64?random=<%= comic.id + 100 %>" 
+                     alt="<%= comic.title %>" 
+                     class="w-full h-full object-cover">
+              </div>
+              <div class="flex-1 min-w-0">
+                <p class="text-sm font-medium text-gray-900 truncate"><%= comic.title %></p>
+                <p class="text-xs text-gray-500"><%= comic.author %></p>
+                <div class="flex items-center mt-1">
+                  <span class="text-xs text-green-600 font-medium">
+                    ⭐ <%= comic.rating %>
+                  </span>
+                  <span class="text-xs text-gray-400 ml-2">
+                    👁 <%= number_with_delimiter(comic.view_count) %>
+                  </span>
+                </div>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </section>
+
+    <!-- 최신 작품 -->
+    <section>
+      <h3 class="text-xl font-bold text-gray-900 mb-4 flex items-center">
+        <span class="text-blue-500 mr-2">✨</span>
+        최신 <%= @genre_korean %> 웹툰
+      </h3>
+      <div class="bg-white border border-gray-200 rounded-lg p-6">
+        <div class="space-y-4">
+          <% @recent_comics.each do |comic| %>
+            <div class="flex items-center hover:bg-gray-50 p-3 rounded cursor-pointer transition-colors duration-200"
+                 onclick="location.href='/webtoon/list?titleId=<%= comic.id %>&tab=<%= comic.day_of_week %>'">
+              <div class="w-12 h-16 rounded mr-3 flex-shrink-0 overflow-hidden">
+                <img src="https://picsum.photos/48/64?random=<%= comic.id + 200 %>" 
+                     alt="<%= comic.title %>" 
+                     class="w-full h-full object-cover">
+              </div>
+              <div class="flex-1 min-w-0">
+                <p class="text-sm font-medium text-gray-900 truncate"><%= comic.title %></p>
+                <p class="text-xs text-gray-500"><%= comic.author %></p>
+                <div class="flex items-center mt-1">
+                  <span class="text-xs text-blue-600 font-medium">
+                    ⭐ <%= comic.rating %>
+                  </span>
+                  <span class="text-xs text-gray-400 ml-2">
+                    <%= comic.day_of_week %>요일
+                  </span>
+                  <% if comic.is_new %>
+                    <span class="text-xs bg-red-500 text-white px-2 py-1 rounded ml-2">NEW</span>
+                  <% end %>
+                </div>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- 다른 장르 추천 -->
+  <section>
+    <h3 class="text-xl font-bold text-gray-900 mb-6">다른 장르도 둘러보세요</h3>
+    <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4">
+      <% 
+        other_genres = [
+          { name: '로맨스', key: 'romance', emoji: '💕', color: 'from-pink-400 to-red-400' },
+          { name: '액션', key: 'action', emoji: '⚔️', color: 'from-orange-400 to-red-500' },
+          { name: '판타지', key: 'fantasy', emoji: '🔮', color: 'from-purple-400 to-indigo-500' },
+          { name: '일상', key: 'daily', emoji: '☕', color: 'from-green-400 to-blue-400' },
+          { name: '개그', key: 'comedy', emoji: '😂', color: 'from-yellow-400 to-orange-400' },
+          { name: '스릴러', key: 'thriller', emoji: '🔪', color: 'from-gray-600 to-black' },
+          { name: '드라마', key: 'drama', emoji: '🎭', color: 'from-indigo-400 to-purple-500' },
+          { name: '공포', key: 'horror', emoji: '👻', color: 'from-gray-700 to-gray-900' },
+          { name: '스포츠', key: 'sports', emoji: '⚽', color: 'from-green-500 to-teal-500' },
+          { name: '사극', key: 'historical', emoji: '🏛️', color: 'from-amber-500 to-orange-600' }
+        ].reject { |g| g[:name] == @genre_korean }
+      %>
+      <% other_genres.first(5).each do |genre| %>
+        <div onclick="location.href='/webtoon/genre/<%= genre[:key] %>'" 
+             class="bg-white border border-gray-200 rounded-lg p-4 text-center hover:shadow-md transition-shadow cursor-pointer group">
+          <div class="w-12 h-12 bg-gradient-to-br <%= genre[:color] %> rounded-full mx-auto mb-3 flex items-center justify-center text-xl group-hover:scale-110 transition-transform duration-200">
+            <%= genre[:emoji] %>
+          </div>
+          <p class="font-medium text-gray-900 group-hover:text-purple-600 transition-colors text-sm"><%= genre[:name] %></p>
+        </div>
+      <% end %>
+    </div>
+  </section>
+</main>
+
+<script>
+let currentSort = 'popular';
+const genre = '<%= @genre %>';
+
+// 페이지 로드 시 초기 데이터 로드
+document.addEventListener('DOMContentLoaded', function() {
+  loadGenreWebtoons(genre, currentSort);
+});
+
+// 정렬 함수
+function sortWebtoons(sort, buttonElement) {
+  // 이전 활성 버튼 비활성화
+  document.querySelectorAll('.sort-btn').forEach(btn => {
+    btn.classList.remove('bg-purple-600', 'text-white');
+    btn.classList.add('bg-gray-200', 'text-gray-700', 'hover:bg-gray-300');
+  });
+  
+  // 새 버튼 활성화
+  buttonElement.classList.remove('bg-gray-200', 'text-gray-700', 'hover:bg-gray-300');
+  buttonElement.classList.add('bg-purple-600', 'text-white');
+  
+  currentSort = sort;
+  loadGenreWebtoons(genre, sort);
+}
+
+// 장르별 웹툰 로드 함수
+async function loadGenreWebtoons(genre, sort) {
+  const grid = document.getElementById('webtoon-grid');
+  
+  // 로딩 표시
+  grid.innerHTML = '<div class="col-span-full text-center py-8 text-gray-500">로딩 중...</div>';
+  
+  try {
+    const response = await fetch(`/api/webtoons/by_genre/${genre}?sort=${sort}`);
+    const comics = await response.json();
+    
+    setTimeout(() => {
+      displayWebtoons(comics);
+    }, 300);
+  } catch (error) {
+    console.error('웹툰 데이터 로드 실패:', error);
+    grid.innerHTML = '<div class="col-span-full text-center py-8 text-red-500">데이터를 불러오는데 실패했습니다.</div>';
+  }
+}
+
+// 웹툰 목록 표시 함수
+function displayWebtoons(comics) {
+  const grid = document.getElementById('webtoon-grid');
+  
+  if (comics.length === 0) {
+    grid.innerHTML = '<div class="col-span-full text-center py-8 text-gray-500">해당 장르의 웹툰이 없습니다.</div>';
+    return;
+  }
+  
+  grid.innerHTML = comics.map((comic, index) => `
+    <div class="group cursor-pointer">
+      <a href="/webtoon/list?titleId=${comic.id}&tab=${comic.dayOfWeek}" class="block">
+        <div class="relative overflow-hidden rounded-lg mb-3">
+          <img src="https://picsum.photos/200/300?random=${comic.id || index + 300}" 
+               alt="${comic.title}" 
+               class="aspect-[3/4] w-full object-cover group-hover:scale-105 transition-transform duration-200">
+          ${comic.isNew ? '<div class="absolute top-2 left-2 bg-red-500 text-white text-xs px-2 py-1 rounded">UP</div>' : ''}
+          <div class="absolute bottom-2 right-2 bg-black bg-opacity-70 text-white text-xs px-2 py-1 rounded">
+            ⭐ ${comic.rating}
+          </div>
+        </div>
+        <h3 class="font-bold text-gray-900 text-sm mb-1 line-clamp-2 group-hover:text-purple-600 transition-colors">
+          ${comic.title}
+        </h3>
+        <p class="text-gray-600 text-xs">${comic.author}</p>
+        <p class="text-gray-500 text-xs mt-1">${comic.dayOfWeek}요일 • 조회수 ${formatViewCount(comic.viewCount)}</p>
+      </a>
+    </div>
+  `).join('');
+}
+
+// 조회수 포맷팅 함수
+function formatViewCount(count) {
+  if (count >= 1000000) {
+    return Math.floor(count / 100000) / 10 + 'M';
+  } else if (count >= 1000) {
+    return Math.floor(count / 100) / 10 + 'K';
+  }
+  return count.toString();
+}
+</script>

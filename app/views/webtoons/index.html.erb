@@ -155,16 +155,17 @@
     <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
       <% 
         genres = [
-          { name: '로맨스', emoji: '💕', color: 'from-pink-400 to-red-400' },
-          { name: '액션', emoji: '⚔️', color: 'from-orange-400 to-red-500' },
-          { name: '판타지', emoji: '🔮', color: 'from-purple-400 to-indigo-500' },
-          { name: '일상', emoji: '☕', color: 'from-green-400 to-blue-400' },
-          { name: '개그', emoji: '😂', color: 'from-yellow-400 to-orange-400' },
-          { name: '스릴러', emoji: '🔪', color: 'from-gray-600 to-black' }
+          { name: '로맨스', key: 'romance', emoji: '💕', color: 'from-pink-400 to-red-400' },
+          { name: '액션', key: 'action', emoji: '⚔️', color: 'from-orange-400 to-red-500' },
+          { name: '판타지', key: 'fantasy', emoji: '🔮', color: 'from-purple-400 to-indigo-500' },
+          { name: '일상', key: 'daily', emoji: '☕', color: 'from-green-400 to-blue-400' },
+          { name: '개그', key: 'comedy', emoji: '😂', color: 'from-yellow-400 to-orange-400' },
+          { name: '스릴러', key: 'thriller', emoji: '🔪', color: 'from-gray-600 to-black' }
         ]
       %>
       <% genres.each do |genre| %>
-        <div class="bg-white border border-gray-200 rounded-lg p-4 text-center hover:shadow-md transition-shadow cursor-pointer group">
+        <div onclick="location.href='/webtoon/genre/<%= genre[:key] %>'" 
+             class="bg-white border border-gray-200 rounded-lg p-4 text-center hover:shadow-md transition-shadow cursor-pointer group">
           <div class="w-16 h-16 bg-gradient-to-br <%= genre[:color] %> rounded-full mx-auto mb-3 flex items-center justify-center text-2xl group-hover:scale-110 transition-transform duration-200">
             <%= genre[:emoji] %>
           </div>
