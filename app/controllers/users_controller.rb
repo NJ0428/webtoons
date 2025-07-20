@@ -2,7 +2,10 @@ class UsersController < ApplicationController
   before_action :require_login, only: [:show]
 
   def new
+    puts "=== Users#new action called ==="
     @user = User.new
+    puts "=== @user created: #{@user.inspect} ==="
+    Rails.logger.info "Users#new action called - @user created: #{@user.inspect}"
   end
 
   def create
@@ -18,6 +21,11 @@ class UsersController < ApplicationController
 
   def show
     @user = current_user
+  end
+
+  def test
+    puts "=== Test action called ==="
+    render plain: "테스트 페이지입니다. 이 페이지가 보인다면 Rails가 정상 작동합니다."
   end
 
   private

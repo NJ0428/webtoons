@@ -12,6 +12,7 @@ Rails.application.routes.draw do
   delete "/logout", to: "sessions#destroy"
   get "/signup", to: "users#new"
   post "/signup", to: "users#create"
+  get "/test", to: "users#test"  # 테스트용 라우트
   get "/profile", to: "users#show"
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
