@@ -24,6 +24,11 @@ class WebtoonsController < ApplicationController
   def webtoon_detail
     @comic = Comic.find(params[:titleId])
     @episode = @comic.episodes.find_by(episode_number: params[:no])
+    
+    # 이전화/다음화 정보
+    current_episode_num = @episode.episode_number.to_i
+    @prev_episode = @comic.episodes.find_by(episode_number: current_episode_num - 1)
+    @next_episode = @comic.episodes.find_by(episode_number: current_episode_num + 1)
   end
 
   def genre
@@ -107,6 +112,60 @@ class WebtoonsController < ApplicationController
         dayOfWeek: comic.day_of_week
       }
     }
+  end
+
+  # 검색 페이지
+  def search
+    @query = params[:q]&.strip
+    @comics = []
+    @search_count = 0
+    
+    if @query.present? && @query.length >= 1
+      begin
+        @comics = Comic.search_by_title_and_author(@query).order(view_count: :desc)
+        @search_count = @comics.count
+      rescue => e
+        Rails.logger.error "Search error: #{e.message}"
+        @comics = []
+        @search_count = 0
+        flash.now[:alert] = "검색 중 오류가 발생했습니다."
+      end
+    end
+  end
+
+  # AJAX API for search
+  def search_api
+    query = params[:q]&.strip
+    
+    if query.blank?
+      render json: { comics: [], count: 0 }
+      return
+    end
+    
+    begin
+      comics = Comic.search_by_title_and_author(query).order(view_count: :desc).limit(20)
+      
+      render json: {
+        comics: comics.map { |comic|
+          {
+            id: comic.id,
+            title: comic.title,
+            author: comic.author,
+            thumbnail: comic.thumbnail_url,
+            isNew: comic.is_new,
+            rating: comic.rating,
+            viewCount: comic.view_count,
+            genre: comic.genre,
+            dayOfWeek: comic.day_of_week
+          }
+        },
+        count: comics.count,
+        query: query
+      }
+    rescue => e
+      Rails.logger.error "Search API error: #{e.message}"
+      render json: { comics: [], count: 0, error: "검색 중 오류가 발생했습니다." }
+    end
   end
 
   private

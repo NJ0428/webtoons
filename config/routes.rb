@@ -7,6 +7,8 @@ Rails.application.routes.draw do
   get "/api/webtoons/by_day/:day", to: "webtoons#by_day"
   get "/api/webtoons/trending", to: "webtoons#trending"
   get "/api/webtoons/by_genre/:genre", to: "webtoons#by_genre"
+  get "/search", to: "webtoons#search"
+  get "/api/webtoons/search", to: "webtoons#search_api"
   
   # 사용자 인증 관련 라우트
   get "/login", to: "sessions#new"

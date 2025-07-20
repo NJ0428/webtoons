@@ -1,11 +1,24 @@
 <div class="bg-gray-900 text-white min-h-screen font-sans antialiased">
   <header class="fixed top-0 left-0 right-0 bg-gray-900 bg-opacity-95 z-20 shadow-lg">
     <div class="container mx-auto flex justify-between items-center p-4">
-      <h1 class="text-xl font-bold truncate"><%= @comic.title %> - <%= @episode.episode_number %>화</h1>
+      <a href="/webtoon/list?titleId=<%= @comic.id %>&tab=<%= @comic.day_of_week %>" 
+         class="text-xl font-bold truncate hover:text-green-400 transition duration-300 ease-in-out cursor-pointer">
+        <%= @comic.title %> - <%= @episode.episode_number %>화
+      </a>
       <div class="flex items-center space-x-4">
-        <a href="/webtoon/list?titleId=<%= @comic.id %>&tab=tue" class="text-gray-300 hover:text-green-400 transition duration-300 ease-in-out text-lg">목록으로</a>
-        <a href="#" class="text-gray-300 hover:text-green-400 transition duration-300 ease-in-out text-lg">이전화</a>
-        <a href="#" class="text-gray-300 hover:text-green-400 transition duration-300 ease-in-out text-lg">다음화</a>
+        <% if @prev_episode %>
+          <a href="/webtoon/detail?titleId=<%= @comic.id %>&no=<%= @prev_episode.episode_number %>&week=<%= @comic.day_of_week %>" 
+             class="text-gray-300 hover:text-green-400 transition duration-300 ease-in-out text-lg">이전화</a>
+        <% else %>
+          <span class="text-gray-600 text-lg">이전화</span>
+        <% end %>
+        
+        <% if @next_episode %>
+          <a href="/webtoon/detail?titleId=<%= @comic.id %>&no=<%= @next_episode.episode_number %>&week=<%= @comic.day_of_week %>" 
+             class="text-gray-300 hover:text-green-400 transition duration-300 ease-in-out text-lg">다음화</a>
+        <% else %>
+          <span class="text-gray-600 text-lg">다음화</span>
+        <% end %>
       </div>
     </div>
   </header>
@@ -26,7 +39,17 @@
 
   <footer class="fixed bottom-0 left-0 right-0 bg-gray-900 bg-opacity-95 z-20 shadow-lg py-4">
     <div class="container mx-auto flex justify-center">
-        <a href="#" class="bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-8 rounded-full text-lg transition duration-300 ease-in-out transform hover:scale-105">다음화 보기</a>
+      <% if @next_episode %>
+        <a href="/webtoon/detail?titleId=<%= @comic.id %>&no=<%= @next_episode.episode_number %>&week=<%= @comic.day_of_week %>" 
+           class="bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-8 rounded-full text-lg transition duration-300 ease-in-out transform hover:scale-105">
+          다음화 보기
+        </a>
+      <% else %>
+        <a href="/webtoon/list?titleId=<%= @comic.id %>&tab=<%= @comic.day_of_week %>" 
+           class="bg-gray-600 hover:bg-gray-700 text-white font-bold py-3 px-8 rounded-full text-lg transition duration-300 ease-in-out transform hover:scale-105">
+          목록으로 돌아가기
+        </a>
+      <% end %>
     </div>
   </footer>
 </div>

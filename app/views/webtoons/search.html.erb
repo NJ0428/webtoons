@@ -1,0 +1,100 @@
+<div class="min-h-screen bg-gray-50">
+  <!-- 검색 헤더 -->
+  <div class="bg-white shadow-sm border-b">
+    <div class="max-w-6xl mx-auto px-4 py-6">
+      <div class="flex items-center space-x-4">
+        <h1 class="text-2xl font-bold text-gray-900">웹툰 검색</h1>
+        <div class="flex-1 max-w-2xl">
+          <%= form_with url: search_path, method: :get, local: true, class: "flex" do |form| %>
+            <%= form.text_field :q, 
+                value: @query, 
+                placeholder: "제목이나 작가명을 입력하세요", 
+                class: "flex-1 px-4 py-2 border border-gray-300 rounded-l-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent",
+                id: "search-input" %>
+            <%= form.submit "검색", 
+                class: "px-6 py-2 bg-green-500 text-white rounded-r-lg hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500" %>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 검색 결과 -->
+  <div class="max-w-6xl mx-auto px-4 py-8">
+    <% if @query.present? %>
+      <div class="mb-6">
+        <h2 class="text-lg font-semibold text-gray-900">
+          '<%= @query %>' 검색 결과 
+          <span class="text-green-600">(<%= @search_count %>개)</span>
+        </h2>
+      </div>
+
+      <% if @comics.any? %>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+          <% @comics.each do |comic| %>
+            <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow">
+              <div class="aspect-w-3 aspect-h-4">
+                <img src="<%= comic.thumbnail_url %>" 
+                     alt="<%= comic.title %>" 
+                     class="w-full h-48 object-cover">
+              </div>
+              <div class="p-4">
+                <h3 class="font-semibold text-gray-900 mb-1 line-clamp-2">
+                  <%= link_to comic.title, webtoon_list_path(titleId: comic.id), 
+                      class: "hover:text-green-600" %>
+                </h3>
+                <p class="text-sm text-gray-600 mb-2"><%= comic.author %></p>
+                <div class="flex items-center justify-between text-xs text-gray-500">
+                  <span class="bg-gray-100 px-2 py-1 rounded"><%= comic.genre %></span>
+                  <div class="flex items-center space-x-2">
+                    <span>⭐ <%= comic.rating %></span>
+                    <span>👁 <%= number_with_delimiter(comic.view_count) %></span>
+                  </div>
+                </div>
+                <% if comic.day_of_week.present? %>
+                  <div class="mt-2">
+                    <span class="inline-block bg-green-100 text-green-800 text-xs px-2 py-1 rounded">
+                      <%= comic.day_of_week %>요일 연재
+                    </span>
+                  </div>
+                <% end %>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      <% else %>
+        <div class="text-center py-12">
+          <div class="text-gray-400 text-6xl mb-4">🔍</div>
+          <h3 class="text-lg font-medium text-gray-900 mb-2">검색 결과가 없습니다</h3>
+          <p class="text-gray-600">다른 키워드로 검색해보세요.</p>
+        </div>
+      <% end %>
+    <% else %>
+      <div class="text-center py-12">
+        <div class="text-gray-400 text-6xl mb-4">🔍</div>
+        <h3 class="text-lg font-medium text-gray-900 mb-2">웹툰을 검색해보세요</h3>
+        <p class="text-gray-600">제목이나 작가명으로 원하는 웹툰을 찾을 수 있습니다.</p>
+      </div>
+    <% end %>
+  </div>
+</div>
+
+<script>
+// 실시간 검색 기능 (선택사항)
+document.addEventListener('DOMContentLoaded', function() {
+  const searchInput = document.getElementById('search-input');
+  let searchTimeout;
+
+  searchInput.addEventListener('input', function() {
+    clearTimeout(searchTimeout);
+    const query = this.value.trim();
+    
+    if (query.length >= 2) {
+      searchTimeout = setTimeout(() => {
+        // AJAX로 실시간 검색 결과 표시 (향후 구현 가능)
+        console.log('Searching for:', query);
+      }, 300);
+    }
+  });
+});
+</script>
