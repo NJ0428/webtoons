@@ -1,0 +1,527 @@
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/5.3.0/fabric.min.js"></script>
+
+<script>
+// 이미지 편집기 관련 변수
+let canvas;
+let currentTool = 'select';
+let isDrawing = false;
+let brushSize = 5;
+let brushColor = '#000000';
+let uploadedImages = []; // 업로드된 이미지들을 저장하는 배열
+
+// 파일 업로드 처리
+function handleImageUpload(event) {
+  const files = event.target.files;
+  if (files.length > 0) {
+    for (let i = 0; i < files.length; i++) {
+      const file = files[i];
+      if (file.type.startsWith('image/')) {
+        loadImageFile(file);
+      } else {
+        alert('이미지 파일만 업로드 가능합니다.');
+      }
+    }
+  }
+}
+
+// 이미지 파일 로드
+function loadImageFile(file) {
+  const reader = new FileReader();
+  
+  reader.onload = function(e) {
+    const imageUrl = e.target.result;
+    
+    // 업로드된 이미지를 배열에 저장
+    uploadedImages.push({
+      name: file.name,
+      url: imageUrl,
+      size: file.size
+    });
+    
+    // 미리보기 업데이트
+    updateImagePreview();
+    
+    // 캔버스에 이미지 추가
+    addImageToCanvas(imageUrl, file.name);
+  };
+  
+  reader.readAsDataURL(file);
+}
+
+// 캔버스에 이미지 추가
+function addImageToCanvas(imageUrl, fileName) {
+  if (!canvas) return;
+  
+  fabric.Image.fromURL(imageUrl, function(img) {
+    // 이미지 크기 조정 (캔버스 크기에 맞게)
+    const canvasWidth = canvas.getWidth();
+    const canvasHeight = canvas.getHeight();
+    const imgWidth = img.width;
+    const imgHeight = img.height;
+    
+    // 이미지가 캔버스보다 크면 크기 조정
+    let scale = 1;
+    if (imgWidth > canvasWidth || imgHeight > canvasHeight) {
+      scale = Math.min(canvasWidth / imgWidth, canvasHeight / imgHeight) * 0.8;
+    }
+    
+    img.set({
+      left: Math.random() * (canvasWidth - imgWidth * scale),
+      top: Math.random() * (canvasHeight - imgHeight * scale),
+      scaleX: scale,
+      scaleY: scale,
+      selectable: true
+    });
+    
+    canvas.add(img);
+    canvas.setActiveObject(img);
+    canvas.renderAll();
+  });
+}
+
+// 이미지 미리보기 업데이트
+function updateImagePreview() {
+  const previewContainer = document.getElementById('uploaded-images');
+  if (!previewContainer) return;
+  
+  previewContainer.innerHTML = '';
+  
+  uploadedImages.forEach((image, index) => {
+    const previewItem = document.createElement('div');
+    previewItem.className = 'flex items-center space-x-2 p-2 bg-white rounded border hover:bg-gray-50';
+    
+    previewItem.innerHTML = `
+      <img src="${image.url}" alt="${image.name}" class="w-8 h-8 object-cover rounded">
+      <div class="flex-1 min-w-0">
+        <p class="text-xs font-medium text-gray-900 truncate">${image.name}</p>
+        <p class="text-xs text-gray-500">${formatFileSize(image.size)}</p>
+      </div>
+      <button onclick="addImageToCanvas('${image.url}', '${image.name}')" 
+              class="text-blue-600 hover:text-blue-800 text-xs">
+        추가
+      </button>
+      <button onclick="removeUploadedImage(${index})" 
+              class="text-red-600 hover:text-red-800 text-xs">
+        삭제
+      </button>
+    `;
+    
+    previewContainer.appendChild(previewItem);
+  });
+}
+
+// 업로드된 이미지 제거
+function removeUploadedImage(index) {
+  uploadedImages.splice(index, 1);
+  updateImagePreview();
+}
+
+// 파일 크기 포맷팅
+function formatFileSize(bytes) {
+  if (bytes === 0) return '0 Bytes';
+  const k = 1024;
+  const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+  const i = Math.floor(Math.log(bytes) / Math.log(k));
+  return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+}
+
+// 드래그 앤 드롭 기능 초기화
+function initializeDragAndDrop() {
+  const dropZone = document.getElementById('drop-zone');
+  
+  if (!dropZone) return;
+  
+  // 드래그 오버 이벤트
+  dropZone.addEventListener('dragover', function(e) {
+    e.preventDefault();
+    dropZone.classList.add('border-blue-400', 'bg-blue-50');
+    dropZone.textContent = '파일을 놓으세요';
+  });
+  
+  // 드래그 리브 이벤트
+  dropZone.addEventListener('dragleave', function(e) {
+    e.preventDefault();
+    dropZone.classList.remove('border-blue-400', 'bg-blue-50');
+    dropZone.textContent = '또는 여기에 파일을 드래그하세요';
+  });
+  
+  // 드롭 이벤트
+  dropZone.addEventListener('drop', function(e) {
+    e.preventDefault();
+    dropZone.classList.remove('border-blue-400', 'bg-blue-50');
+    dropZone.textContent = '또는 여기에 파일을 드래그하세요';
+    
+    const files = e.dataTransfer.files;
+    for (let i = 0; i < files.length; i++) {
+      const file = files[i];
+      if (file.type.startsWith('image/')) {
+        loadImageFile(file);
+      }
+    }
+  });
+}
+
+// 이미지 편집기 열기
+function openImageEditor(title, imageUrl) {
+  document.getElementById('imageEditorModal').classList.remove('hidden');
+  document.getElementById('imageEditorModal').classList.add('flex');
+  document.getElementById('editor-title').textContent = `${title} - 이미지 편집기`;
+  
+  // 업로드된 이미지 배열 초기화
+  uploadedImages = [];
+  updateImagePreview();
+  
+  // Fabric.js 캔버스 초기화
+  initializeCanvas(imageUrl);
+  
+  // 드래그 앤 드롭 초기화
+  setTimeout(() => {
+    initializeDragAndDrop();
+  }, 100);
+}
+
+// 이미지 편집기 닫기
+function closeImageEditor() {
+  document.getElementById('imageEditorModal').classList.add('hidden');
+  document.getElementById('imageEditorModal').classList.remove('flex');
+  
+  if (canvas) {
+    canvas.dispose();
+    canvas = null;
+  }
+}
+
+// 캔버스 초기화
+function initializeCanvas(imageUrl) {
+  const canvasElement = document.getElementById('image-canvas');
+  canvas = new fabric.Canvas(canvasElement, {
+    width: 800,
+    height: 600,
+    backgroundColor: '#ffffff'
+  });
+  
+  // 이미지 로드
+  if (imageUrl) {
+    fabric.Image.fromURL(imageUrl, function(img) {
+      // 이미지 크기 조정
+      const canvasWidth = canvas.getWidth();
+      const canvasHeight = canvas.getHeight();
+      const imgWidth = img.width;
+      const imgHeight = img.height;
+      
+      const scale = Math.min(canvasWidth / imgWidth, canvasHeight / imgHeight);
+      
+      img.set({
+        left: (canvasWidth - imgWidth * scale) / 2,
+        top: (canvasHeight - imgHeight * scale) / 2,
+        scaleX: scale,
+        scaleY: scale,
+        selectable: false
+      });
+      
+      canvas.add(img);
+      canvas.sendToBack(img);
+      canvas.renderAll();
+    });
+  }
+  
+  // 그리기 모드 설정
+  canvas.isDrawingMode = false;
+  canvas.freeDrawingBrush.width = brushSize;
+  canvas.freeDrawingBrush.color = brushColor;
+  
+  // 이벤트 리스너
+  canvas.on('mouse:down', function(e) {
+    if (currentTool === 'text') {
+      addTextAtPosition(e.pointer.x, e.pointer.y);
+    }
+  });
+}
+
+// 도구 설정
+function setTool(tool) {
+  currentTool = tool;
+  
+  // 모든 도구 버튼 초기화
+  document.querySelectorAll('.tool-btn').forEach(btn => {
+    btn.classList.remove('bg-blue-500', 'text-white');
+    btn.classList.add('bg-gray-200');
+  });
+  
+  // 선택된 도구 버튼 활성화
+  event.target.classList.remove('bg-gray-200');
+  event.target.classList.add('bg-blue-500', 'text-white');
+  
+  switch(tool) {
+    case 'select':
+      canvas.isDrawingMode = false;
+      canvas.selection = true;
+      break;
+    case 'draw':
+      canvas.isDrawingMode = true;
+      canvas.selection = false;
+      break;
+    case 'text':
+      canvas.isDrawingMode = false;
+      canvas.selection = true;
+      break;
+    case 'shape':
+      canvas.isDrawingMode = false;
+      canvas.selection = true;
+      break;
+  }
+}
+
+// 브러시 크기 설정
+function setBrushSize(size) {
+  brushSize = parseInt(size);
+  document.getElementById('brush-size-value').textContent = size + 'px';
+  if (canvas) {
+    canvas.freeDrawingBrush.width = brushSize;
+  }
+}
+
+// 브러시 색상 설정
+function setBrushColor(color) {
+  brushColor = color;
+  if (canvas) {
+    canvas.freeDrawingBrush.color = brushColor;
+  }
+}
+
+// 필터 적용
+function applyFilter(filterType, value) {
+  const activeObject = canvas.getActiveObject();
+  if (!activeObject || activeObject.type !== 'image') {
+    alert('이미지를 선택해주세요.');
+    return;
+  }
+  
+  let filter;
+  switch(filterType) {
+    case 'brightness':
+      filter = new fabric.Image.filters.Brightness({
+        brightness: value
+      });
+      break;
+    case 'contrast':
+      filter = new fabric.Image.filters.Contrast({
+        contrast: value
+      });
+      break;
+    case 'sepia':
+      filter = new fabric.Image.filters.Sepia();
+      break;
+    case 'grayscale':
+      filter = new fabric.Image.filters.Grayscale();
+      break;
+  }
+  
+  if (filter) {
+    activeObject.filters.push(filter);
+    activeObject.applyFilters();
+    canvas.renderAll();
+  }
+}
+
+// 텍스트 레이어 추가
+function addTextLayer() {
+  const text = new fabric.IText('텍스트를 입력하세요', {
+    left: 100,
+    top: 100,
+    fontFamily: 'Arial',
+    fontSize: 20,
+    fill: '#000000'
+  });
+  
+  canvas.add(text);
+  canvas.setActiveObject(text);
+  canvas.renderAll();
+}
+
+// 특정 위치에 텍스트 추가
+function addTextAtPosition(x, y) {
+  const text = new fabric.IText('텍스트', {
+    left: x,
+    top: y,
+    fontFamily: 'Arial',
+    fontSize: 20,
+    fill: brushColor
+  });
+  
+  canvas.add(text);
+  canvas.setActiveObject(text);
+  canvas.renderAll();
+}
+
+// 도형 레이어 추가
+function addShapeLayer(shapeType) {
+  let shape;
+  
+  switch(shapeType) {
+    case 'rect':
+      shape = new fabric.Rect({
+        left: 100,
+        top: 100,
+        width: 100,
+        height: 100,
+        fill: 'transparent',
+        stroke: brushColor,
+        strokeWidth: 2
+      });
+      break;
+    case 'circle':
+      shape = new fabric.Circle({
+        left: 100,
+        top: 100,
+        radius: 50,
+        fill: 'transparent',
+        stroke: brushColor,
+        strokeWidth: 2
+      });
+      break;
+  }
+  
+  if (shape) {
+    canvas.add(shape);
+    canvas.setActiveObject(shape);
+    canvas.renderAll();
+  }
+}
+
+// 여러 이미지를 한번에 캔버스에 추가
+function addAllImagesToCanvas() {
+  uploadedImages.forEach(image => {
+    addImageToCanvas(image.url, image.name);
+  });
+}
+
+// 이미지 레이어 관리
+function bringToFront() {
+  const activeObject = canvas.getActiveObject();
+  if (activeObject) {
+    canvas.bringToFront(activeObject);
+    canvas.renderAll();
+  }
+}
+
+function sendToBack() {
+  const activeObject = canvas.getActiveObject();
+  if (activeObject) {
+    canvas.sendToBack(activeObject);
+    canvas.renderAll();
+  }
+}
+
+// 이미지 복제
+function duplicateImage() {
+  const activeObject = canvas.getActiveObject();
+  if (activeObject) {
+    activeObject.clone(function(cloned) {
+      cloned.set({
+        left: cloned.left + 10,
+        top: cloned.top + 10
+      });
+      canvas.add(cloned);
+      canvas.setActiveObject(cloned);
+      canvas.renderAll();
+    });
+  }
+}
+
+// 이미지 회전
+function rotateImage(angle) {
+  const activeObject = canvas.getActiveObject();
+  if (activeObject) {
+    activeObject.rotate(activeObject.angle + angle);
+    canvas.renderAll();
+  }
+}
+
+// 이미지 뒤집기
+function flipImage(direction) {
+  const activeObject = canvas.getActiveObject();
+  if (activeObject) {
+    if (direction === 'horizontal') {
+      activeObject.set('flipX', !activeObject.flipX);
+    } else if (direction === 'vertical') {
+      activeObject.set('flipY', !activeObject.flipY);
+    }
+    canvas.renderAll();
+  }
+}
+
+// 실행 취소
+function undoAction() {
+  // 간단한 실행 취소 구현
+  const objects = canvas.getObjects();
+  if (objects.length > 1) { // 배경 이미지 제외
+    canvas.remove(objects[objects.length - 1]);
+    canvas.renderAll();
+  }
+}
+
+// 다시 실행 (간단한 구현)
+function redoAction() {
+  // 복잡한 redo 기능은 별도의 히스토리 관리가 필요
+  alert('다시 실행 기능은 개발 중입니다.');
+}
+
+// 캔버스 지우기
+function clearCanvas() {
+  if (confirm('모든 편집 내용을 지우시겠습니까?')) {
+    const objects = canvas.getObjects();
+    const backgroundImage = objects[0]; // 첫 번째 객체가 배경 이미지라고 가정
+    
+    canvas.clear();
+    if (backgroundImage && backgroundImage.type === 'image') {
+      canvas.add(backgroundImage);
+      canvas.sendToBack(backgroundImage);
+    }
+    canvas.renderAll();
+  }
+}
+
+// 이미지 저장
+function saveImage() {
+  if (!canvas) return;
+  
+  // 캔버스를 이미지로 변환
+  const dataURL = canvas.toDataURL({
+    format: 'png',
+    quality: 1.0
+  });
+  
+  // 다운로드 링크 생성
+  const link = document.createElement('a');
+  link.download = 'edited-image.png';
+  link.href = dataURL;
+  
+  // 자동 다운로드
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+  
+  alert('이미지가 저장되었습니다!');
+}
+
+// 키보드 단축키
+document.addEventListener('keydown', function(e) {
+  if (!canvas) return;
+  
+  // Ctrl+Z: 실행 취소
+  if (e.ctrlKey && e.key === 'z') {
+    e.preventDefault();
+    undoAction();
+  }
+  
+  // Delete: 선택된 객체 삭제
+  if (e.key === 'Delete') {
+    const activeObject = canvas.getActiveObject();
+    if (activeObject) {
+      canvas.remove(activeObject);
+      canvas.renderAll();
+    }
+  }
+});
+</script>

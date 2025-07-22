@@ -13,9 +13,10 @@
     <%# Enable PWA manifest for installable apps (make sure to enable in config/routes.rb too!) %>
     <%#= tag.link rel: "manifest", href: pwa_manifest_path(format: :json) %>
 
-    <link rel="icon" href="/icon.png" type="image/png">
-    <link rel="icon" href="/icon.svg" type="image/svg+xml">
-    <link rel="apple-touch-icon" href="/icon.png">
+    <%= favicon_link_tag "naktoon.png", type: "image/png" %>
+    <%= favicon_link_tag "naktoon.png", rel: "apple-touch-icon" %>
+    <%= favicon_link_tag "naktoon.png", rel: "icon", sizes: "32x32" %>
+    <%= favicon_link_tag "naktoon.png", rel: "icon", sizes: "16x16" %>
 
     <%# Includes all stylesheet files in app/assets/stylesheets %>
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
@@ -32,11 +33,13 @@
         <div class="flex justify-between h-16">
           <!-- 로고 및 메인 메뉴 -->
           <div class="flex items-center space-x-8">
-            <%= link_to "웹툰", "/", class: "text-xl font-bold text-purple-600" %>
+            <%= link_to "/", class: "flex items-center" do %>
+              <%= image_tag "naktoon.png", alt: "웹툰", class: "h-10 w-auto" %>
+            <% end %>
             
             <!-- 메인 네비게이션 -->
             <nav class="hidden md:flex space-x-6">
-              <%= link_to "웹툰", "/webtoon", class: "text-gray-900 hover:text-purple-600 font-medium" %>
+              <%= link_to "홈", "/webtoon", class: "text-gray-900 hover:text-purple-600 font-medium" %>
               <%= link_to "베스트도전", best_challenge_path, class: "text-gray-700 hover:text-blue-600 font-medium" %>
               <%= link_to "도전만화", challenge_path, class: "text-gray-700 hover:text-green-600 font-medium" %>
               <%= link_to "웹소설", novels_path, class: "text-gray-700 hover:text-purple-600 font-medium" %>

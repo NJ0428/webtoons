@@ -38,14 +38,14 @@
         </div>
         
         <nav class="space-y-2">
-          <a href="#dashboard" onclick="showSection('dashboard')" class="nav-item flex items-center space-x-3 px-3 py-2 text-green-600 bg-green-50 rounded-lg cursor-pointer">
+          <a href="#dashboard" onclick="showSection('dashboard'); return false;" class="nav-item flex items-center space-x-3 px-3 py-2 text-green-600 bg-green-50 rounded-lg cursor-pointer">
             <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
               <path d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4zM3 10a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H4a1 1 0 01-1-1v-6zM14 9a1 1 0 00-1 1v6a1 1 0 001 1h2a1 1 0 001-1v-6a1 1 0 00-1-1h-2z"></path>
             </svg>
             <span class="font-medium">대시보드</span>
           </a>
           
-          <a href="#works" onclick="showSection('works')" class="nav-item flex items-center space-x-3 px-3 py-2 text-gray-600 hover:bg-gray-50 rounded-lg cursor-pointer">
+          <a href="#works" onclick="showSection('works'); return false;" class="nav-item flex items-center space-x-3 px-3 py-2 text-gray-600 hover:bg-gray-50 rounded-lg cursor-pointer">
             <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
               <path d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z"></path>
               <path fill-rule="evenodd" d="M4 5a2 2 0 012-2v1a2 2 0 00-2 2v6a2 2 0 002 2h8a2 2 0 002-2V6a2 2 0 00-2-2V3a2 2 0 012-2 2 2 0 012 2v8a4 4 0 01-4 4H6a4 4 0 01-4-4V5z" clip-rule="evenodd"></path>
@@ -53,21 +53,21 @@
             <span>작품 관리</span>
           </a>
           
-          <a href="#analytics" onclick="showSection('analytics')" class="nav-item flex items-center space-x-3 px-3 py-2 text-gray-600 hover:bg-gray-50 rounded-lg cursor-pointer">
+          <a href="#analytics" onclick="showSection('analytics'); return false;" class="nav-item flex items-center space-x-3 px-3 py-2 text-gray-600 hover:bg-gray-50 rounded-lg cursor-pointer">
             <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
               <path d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4zM3 10a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H4a1 1 0 01-1-1v-6zM14 9a1 1 0 00-1 1v6a1 1 0 001 1h2a1 1 0 001-1v-6a1 1 0 00-1-1h-2z"></path>
             </svg>
             <span>통계 분석</span>
           </a>
           
-          <a href="#profile" onclick="showSection('profile')" class="nav-item flex items-center space-x-3 px-3 py-2 text-gray-600 hover:bg-gray-50 rounded-lg cursor-pointer">
+          <a href="#profile" onclick="showSection('profile'); return false;" class="nav-item flex items-center space-x-3 px-3 py-2 text-gray-600 hover:bg-gray-50 rounded-lg cursor-pointer">
             <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
               <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-6-3a2 2 0 11-4 0 2 2 0 014 0zm-2 4a5 5 0 00-4.546 2.916A5.986 5.986 0 0010 16a5.986 5.986 0 004.546-2.084A5 5 0 0010 11z" clip-rule="evenodd"></path>
             </svg>
             <span>프로필 설정</span>
           </a>
           
-          <a href="#help" onclick="showSection('help')" class="nav-item flex items-center space-x-3 px-3 py-2 text-gray-600 hover:bg-gray-50 rounded-lg cursor-pointer">
+          <a href="#help" onclick="showSection('help'); return false;" class="nav-item flex items-center space-x-3 px-3 py-2 text-gray-600 hover:bg-gray-50 rounded-lg cursor-pointer">
             <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
               <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-3a1 1 0 00-.867.5 1 1 0 11-1.731-1A3 3 0 0113 8a3.001 3.001 0 01-2 2.83V11a1 1 0 11-2 0v-1a1 1 0 011-1 1 1 0 100-2zm0 8a1 1 0 100-2 1 1 0 000 2z" clip-rule="evenodd"></path>
             </svg>
@@ -219,124 +219,124 @@
 
         <!-- 통계 카드 -->
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-        <!-- 최근 업로드 작품 -->
-        <div class="bg-white rounded-lg shadow-sm p-6">
-          <h3 class="font-semibold text-gray-900 mb-4">최근 업로드 작품</h3>
-          <div class="flex items-center space-x-4">
-            <img src="https://picsum.photos/80/100?random=301" alt="작품 썸네일" class="w-16 h-20 object-cover rounded">
-            <div class="flex-1">
-              <h4 class="font-medium text-gray-900">웹툰작가의 일상</h4>
-              <p class="text-sm text-gray-600">8화</p>
-              <div class="flex items-center space-x-4 mt-2 text-sm">
-                <div class="flex items-center text-green-600">
-                  <span class="w-2 h-2 bg-green-500 rounded-full mr-1"></span>
-                  <span>1</span>
-                </div>
-                <div class="flex items-center text-gray-500">
-                  <span class="w-2 h-2 bg-gray-400 rounded-full mr-1"></span>
-                  <span>0</span>
-                </div>
-                <div class="flex items-center text-gray-500">
-                  <span class="w-2 h-2 bg-yellow-400 rounded-full mr-1"></span>
-                  <span>0.00</span>
+          <!-- 최근 업로드 작품 -->
+          <div class="bg-white rounded-lg shadow-sm p-6">
+            <h3 class="font-semibold text-gray-900 mb-4">최근 업로드 작품</h3>
+            <div class="flex items-center space-x-4">
+              <img src="https://picsum.photos/80/100?random=301" alt="작품 썸네일" class="w-16 h-20 object-cover rounded">
+              <div class="flex-1">
+                <h4 class="font-medium text-gray-900">웹툰작가의 일상</h4>
+                <p class="text-sm text-gray-600">8화</p>
+                <div class="flex items-center space-x-4 mt-2 text-sm">
+                  <div class="flex items-center text-green-600">
+                    <span class="w-2 h-2 bg-green-500 rounded-full mr-1"></span>
+                    <span>1</span>
+                  </div>
+                  <div class="flex items-center text-gray-500">
+                    <span class="w-2 h-2 bg-gray-400 rounded-full mr-1"></span>
+                    <span>0</span>
+                  </div>
+                  <div class="flex items-center text-gray-500">
+                    <span class="w-2 h-2 bg-yellow-400 rounded-full mr-1"></span>
+                    <span>0.00</span>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-          <div class="text-xs text-gray-500 mt-4">
-            2024.07.20 18:47 등록
-          </div>
-        </div>
-        
-        <!-- 전체 작품 통계 -->
-        <div class="bg-white rounded-lg shadow-sm p-6">
-          <h3 class="font-semibold text-gray-900 mb-4">전체 작품 통계</h3>
-          <div class="space-y-4">
-            <div class="flex justify-between items-center">
-              <span class="text-gray-600">총 조회수</span>
-              <span class="font-bold text-2xl text-gray-900">2,092</span>
-            </div>
-            <div class="w-full bg-gray-200 rounded-full h-2">
-              <div class="bg-green-500 h-2 rounded-full" style="width: 45%"></div>
-            </div>
-            <div class="flex justify-between items-center text-sm text-gray-500">
-              <span>이번 달</span>
-              <span>2</span>
+            <div class="text-xs text-gray-500 mt-4">
+              2024.07.20 18:47 등록
             </div>
           </div>
           
-          <!-- 차트 영역 -->
-          <div class="mt-6 h-32 bg-gradient-to-r from-green-50 to-blue-50 rounded-lg flex items-center justify-center">
-            <div class="text-center text-gray-500">
-              <div class="text-2xl mb-2">📊</div>
-              <div class="text-sm">조회수 차트</div>
+          <!-- 전체 작품 통계 -->
+          <div class="bg-white rounded-lg shadow-sm p-6">
+            <h3 class="font-semibold text-gray-900 mb-4">전체 작품 통계</h3>
+            <div class="space-y-4">
+              <div class="flex justify-between items-center">
+                <span class="text-gray-600">총 조회수</span>
+                <span class="font-bold text-2xl text-gray-900">2,092</span>
+              </div>
+              <div class="w-full bg-gray-200 rounded-full h-2">
+                <div class="bg-green-500 h-2 rounded-full" style="width: 45%"></div>
+              </div>
+              <div class="flex justify-between items-center text-sm text-gray-500">
+                <span>이번 달</span>
+                <span>2</span>
+              </div>
+            </div>
+            
+            <!-- 차트 영역 -->
+            <div class="mt-6 h-32 bg-gradient-to-r from-green-50 to-blue-50 rounded-lg flex items-center justify-center">
+              <div class="text-center text-gray-500">
+                <div class="text-2xl mb-2">📊</div>
+                <div class="text-sm">조회수 차트</div>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-      
-      <!-- 공지사항 -->
-      <div class="bg-white rounded-lg shadow-sm p-6 mb-8">
-        <div class="flex items-center justify-between mb-4">
-          <h3 class="font-semibold text-gray-900">공지</h3>
-          <a href="#" class="text-sm text-green-600 hover:text-green-700">전체 공지 보기 ></a>
-        </div>
-        <div class="space-y-3">
-          <div class="text-sm">
-            <span class="text-gray-500">2024년 8월 웹툰 PICK - 우수 작품 모집 안내</span>
-          </div>
-          <div class="text-sm">
-            <span class="text-gray-500">스토리 작가 신청 시 1차 심사 결과 안내</span>
-          </div>
-          <div class="text-sm">
-            <span class="text-gray-500">웹툰 5차 PICK - 우수 작품 공모전 결과</span>
-          </div>
-        </div>
-      </div>
-      
-      <!-- 내 작품 목록 -->
-      <div class="bg-white rounded-lg shadow-sm p-6">
-        <div class="flex items-center justify-between mb-4">
-          <h3 class="font-semibold text-gray-900">내 작품</h3>
-          <a href="#" class="text-sm text-green-600 hover:text-green-700">전체 작품 보기 ></a>
-        </div>
         
-        <!-- 테이블 헤더 -->
-        <div class="overflow-x-auto">
-          <table class="w-full">
-            <thead class="bg-gray-50">
-              <tr class="text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                <th class="px-4 py-3">작품명</th>
-                <th class="px-4 py-3">장르</th>
-                <th class="px-4 py-3">회차</th>
-                <th class="px-4 py-3">최신 업데이트</th>
-                <th class="px-4 py-3">조회수</th>
-                <th class="px-4 py-3">평점</th>
-              </tr>
-            </thead>
-            <tbody class="bg-white divide-y divide-gray-200">
-              <tr class="hover:bg-gray-50">
-                <td class="px-4 py-4">
-                  <div class="flex items-center space-x-3">
-                    <img src="https://picsum.photos/40/50?random=302" alt="작품" class="w-8 h-10 object-cover rounded">
-                    <span class="font-medium text-gray-900">웹툰작가의 일상</span>
-                  </div>
-                </td>
-                <td class="px-4 py-4 text-sm text-gray-600">일상</td>
-                <td class="px-4 py-4 text-sm text-gray-600">8</td>
-                <td class="px-4 py-4 text-sm text-gray-600">24.07.20</td>
-                <td class="px-4 py-4 text-sm text-gray-600">2,051</td>
-                <td class="px-4 py-4 text-sm text-gray-600">
-                  <div class="flex items-center">
-                    <span class="text-yellow-500 mr-1">⭐</span>
-                    <span>4.2</span>
-                  </div>
-                </td>
-              </tr>
-            </tbody>
-          </table>
+        <!-- 공지사항 -->
+        <div class="bg-white rounded-lg shadow-sm p-6 mb-8">
+          <div class="flex items-center justify-between mb-4">
+            <h3 class="font-semibold text-gray-900">공지</h3>
+            <a href="#" class="text-sm text-green-600 hover:text-green-700">전체 공지 보기 ></a>
+          </div>
+          <div class="space-y-3">
+            <div class="text-sm">
+              <span class="text-gray-500">2024년 8월 웹툰 PICK - 우수 작품 모집 안내</span>
+            </div>
+            <div class="text-sm">
+              <span class="text-gray-500">스토리 작가 신청 시 1차 심사 결과 안내</span>
+            </div>
+            <div class="text-sm">
+              <span class="text-gray-500">웹툰 5차 PICK - 우수 작품 공모전 결과</span>
+            </div>
+          </div>
         </div>
-      </div>
+
+        <!-- 내 작품 목록 -->
+        <div class="bg-white rounded-lg shadow-sm p-6">
+          <div class="flex items-center justify-between mb-4">
+            <h3 class="font-semibold text-gray-900">내 작품</h3>
+            <a href="#" class="text-sm text-green-600 hover:text-green-700">전체 작품 보기 ></a>
+          </div>
+          
+          <!-- 테이블 헤더 -->
+          <div class="overflow-x-auto">
+            <table class="w-full">
+              <thead class="bg-gray-50">
+                <tr class="text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th class="px-4 py-3">작품명</th>
+                  <th class="px-4 py-3">장르</th>
+                  <th class="px-4 py-3">회차</th>
+                  <th class="px-4 py-3">최신 업데이트</th>
+                  <th class="px-4 py-3">조회수</th>
+                  <th class="px-4 py-3">평점</th>
+                </tr>
+              </thead>
+              <tbody class="bg-white divide-y divide-gray-200">
+                <tr class="hover:bg-gray-50">
+                  <td class="px-4 py-4">
+                    <div class="flex items-center space-x-3">
+                      <img src="https://picsum.photos/40/50?random=302" alt="작품" class="w-8 h-10 object-cover rounded">
+                      <span class="font-medium text-gray-900">웹툰작가의 일상</span>
+                    </div>
+                  </td>
+                  <td class="px-4 py-4 text-sm text-gray-600">일상</td>
+                  <td class="px-4 py-4 text-sm text-gray-600">8</td>
+                  <td class="px-4 py-4 text-sm text-gray-600">24.07.20</td>
+                  <td class="px-4 py-4 text-sm text-gray-600">2,051</td>
+                  <td class="px-4 py-4 text-sm text-gray-600">
+                    <div class="flex items-center">
+                      <span class="text-yellow-500 mr-1">⭐</span>
+                      <span>4.2</span>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
       </div>
 
       <!-- 작품 관리 섹션 -->
@@ -347,23 +347,6 @@
             <button onclick="openModal('newWebtoonModal')" class="bg-green-500 text-white px-4 py-2 rounded-lg text-sm hover:bg-green-600">
               새 작품 추가
             </button>
-          </div>
-          
-          <!-- 작품 필터 -->
-          <div class="flex space-x-4 mb-6">
-            <select class="border border-gray-300 rounded-lg px-3 py-2 text-sm">
-              <option>모든 상태</option>
-              <option>연재중</option>
-              <option>완결</option>
-              <option>휴재</option>
-            </select>
-            <select class="border border-gray-300 rounded-lg px-3 py-2 text-sm">
-              <option>모든 장르</option>
-              <option>로맨스</option>
-              <option>액션</option>
-              <option>판타지</option>
-            </select>
-            <input type="text" placeholder="작품명 검색" class="border border-gray-300 rounded-lg px-3 py-2 text-sm flex-1">
           </div>
 
           <!-- 작품 목록 -->
@@ -377,7 +360,7 @@
                 <span class="bg-green-100 text-green-800 px-2 py-1 rounded">연재중</span>
               </div>
               <div class="flex space-x-2">
-                <button class="flex-1 bg-blue-500 text-white py-1 px-2 rounded text-xs hover:bg-blue-600">편집</button>
+                <button onclick="openImageEditor('웹툰작가의 일상', 'https://picsum.photos/800/1000?random=401')" class="flex-1 bg-blue-500 text-white py-1 px-2 rounded text-xs hover:bg-blue-600">편집</button>
                 <button class="flex-1 bg-gray-500 text-white py-1 px-2 rounded text-xs hover:bg-gray-600">통계</button>
               </div>
             </div>
@@ -391,7 +374,7 @@
                 <span class="bg-green-100 text-green-800 px-2 py-1 rounded">연재중</span>
               </div>
               <div class="flex space-x-2">
-                <button class="flex-1 bg-blue-500 text-white py-1 px-2 rounded text-xs hover:bg-blue-600">편집</button>
+                <button onclick="openImageEditor('판타지 모험기', 'https://picsum.photos/800/1000?random=402')" class="flex-1 bg-blue-500 text-white py-1 px-2 rounded text-xs hover:bg-blue-600">편집</button>
                 <button class="flex-1 bg-gray-500 text-white py-1 px-2 rounded text-xs hover:bg-gray-600">통계</button>
               </div>
             </div>
@@ -405,7 +388,7 @@
                 <span class="bg-yellow-100 text-yellow-800 px-2 py-1 rounded">완결</span>
               </div>
               <div class="flex space-x-2">
-                <button class="flex-1 bg-blue-500 text-white py-1 px-2 rounded text-xs hover:bg-blue-600">편집</button>
+                <button onclick="openImageEditor('로맨스 스토리', 'https://picsum.photos/800/1000?random=403')" class="flex-1 bg-blue-500 text-white py-1 px-2 rounded text-xs hover:bg-blue-600">편집</button>
                 <button class="flex-1 bg-gray-500 text-white py-1 px-2 rounded text-xs hover:bg-gray-600">통계</button>
               </div>
             </div>
@@ -457,6 +440,168 @@
                 <div class="text-2xl mb-2">👥</div>
                 <div class="text-sm">독자 분포도</div>
               </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 데이터 분석 그리드 -->
+        <div class="bg-white rounded-lg shadow-sm p-6 mb-6">
+          <div class="flex items-center justify-between mb-4">
+            <h3 class="text-lg font-semibold text-gray-900">작품별 상세 분석</h3>
+            <div class="flex space-x-2">
+              <button class="text-sm text-blue-600 hover:text-blue-800 flex items-center">
+                <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clip-rule="evenodd"></path>
+                </svg>
+                엑셀 다운로드
+              </button>
+              <button class="text-sm text-green-600 hover:text-green-800 flex items-center">
+                <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M4 2a1 1 0 011 1v2.101a7.002 7.002 0 0111.601 2.566 1 1 0 11-1.885.666A5.002 5.002 0 005.999 7H9a1 1 0 010 2H4a1 1 0 01-1-1V3a1 1 0 011-1zm.008 9.057a1 1 0 011.276.61A5.002 5.002 0 0014.001 13H11a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0v-2.101a7.002 7.002 0 01-11.601-2.566 1 1 0 01.61-1.276z" clip-rule="evenodd"></path>
+                </svg>
+                새로고침
+              </button>
+            </div>
+          </div>
+          
+          <!-- 엑셀 스타일 그리드 테이블 -->
+          <div class="overflow-x-auto border border-gray-200 rounded-lg">
+            <div class="text-xs text-gray-500 mb-2 flex items-center">
+              <svg class="w-4 h-4 mr-1 text-blue-500" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2h-1v-3a1 1 0 00-1-1z" clip-rule="evenodd"></path>
+              </svg>
+              <span>열 너비를 조절하려면 열 구분선을 드래그하세요</span>
+            </div>
+            <table id="resizable-table" class="w-full text-sm">
+              <!-- 테이블 헤더 -->
+              <thead class="bg-gray-50 border-b border-gray-200">
+                <tr class="resizable-header">
+                  <th class="px-3 py-2 text-left font-medium text-gray-700 border-r border-gray-200 resizable" data-min-width="30" style="width: 40px">#</th>
+                  <th class="px-3 py-2 text-left font-medium text-gray-700 border-r border-gray-200 resizable" data-min-width="120" style="width: 180px">작품명</th>
+                  <th class="px-3 py-2 text-center font-medium text-gray-700 border-r border-gray-200 resizable" data-min-width="60" style="width: 80px">장르</th>
+                  <th class="px-3 py-2 text-center font-medium text-gray-700 border-r border-gray-200 resizable" data-min-width="60" style="width: 70px">회차</th>
+                  <th class="px-3 py-2 text-right font-medium text-gray-700 border-r border-gray-200 resizable" data-min-width="70" style="width: 90px">조회수</th>
+                  <th class="px-3 py-2 text-right font-medium text-gray-700 border-r border-gray-200 resizable" data-min-width="60" style="width: 70px">평점</th>
+                  <th class="px-3 py-2 text-right font-medium text-gray-700 border-r border-gray-200 resizable" data-min-width="70" style="width: 90px">좋아요</th>
+                  <th class="px-3 py-2 text-right font-medium text-gray-700 border-r border-gray-200 resizable" data-min-width="70" style="width: 80px">댓글</th>
+                  <th class="px-3 py-2 text-right font-medium text-gray-700 border-r border-gray-200 resizable" data-min-width="90" style="width: 110px">이번달 수익</th>
+                  <th class="px-3 py-2 text-right font-medium text-gray-700 border-r border-gray-200 resizable" data-min-width="90" style="width: 110px">총 수익</th>
+                  <th class="px-3 py-2 text-center font-medium text-gray-700 border-r border-gray-200 resizable" data-min-width="70" style="width: 90px">성장률</th>
+                  <th class="px-3 py-2 text-center font-medium text-gray-700 resizable" data-min-width="60" style="width: 80px">상태</th>
+                </tr>
+              </thead>
+              
+              <!-- 테이블 바디 -->
+              <tbody class="bg-white divide-y divide-gray-200">
+                <tr class="hover:bg-gray-50 transition-colors">
+                  <td class="px-3 py-2 text-gray-600 border-r border-gray-200 bg-gray-50 font-medium">1</td>
+                  <td class="px-3 py-2 border-r border-gray-200">
+                    <div class="flex items-center space-x-2">
+                      <img src="https://picsum.photos/24/30?random=501" alt="" class="w-6 h-8 object-cover rounded">
+                      <span class="font-medium text-gray-900">웹툰작가의 일상</span>
+                    </div>
+                  </td>
+                  <td class="px-3 py-2 text-center border-r border-gray-200 text-gray-600">일상</td>
+                  <td class="px-3 py-2 text-center border-r border-gray-200 text-gray-900 font-medium">8</td>
+                  <td class="px-3 py-2 text-right border-r border-gray-200 text-gray-900 font-medium">2,051</td>
+                  <td class="px-3 py-2 text-right border-r border-gray-200">
+                    <span class="text-yellow-600 font-medium">4.2</span>
+                  </td>
+                  <td class="px-3 py-2 text-right border-r border-gray-200 text-gray-900 font-medium">1,247</td>
+                  <td class="px-3 py-2 text-right border-r border-gray-200 text-gray-900 font-medium">89</td>
+                  <td class="px-3 py-2 text-right border-r border-gray-200 text-green-600 font-medium">₩45,000</td>
+                  <td class="px-3 py-2 text-right border-r border-gray-200 text-green-600 font-bold">₩180,000</td>
+                  <td class="px-3 py-2 text-center border-r border-gray-200">
+                    <span class="text-green-600 font-medium">+12%</span>
+                  </td>
+                  <td class="px-3 py-2 text-center">
+                    <span class="bg-green-100 text-green-800 px-2 py-1 rounded-full text-xs font-medium">연재중</span>
+                  </td>
+                </tr>
+                
+                <tr class="hover:bg-gray-50 transition-colors">
+                  <td class="px-3 py-2 text-gray-600 border-r border-gray-200 bg-gray-50 font-medium">2</td>
+                  <td class="px-3 py-2 border-r border-gray-200">
+                    <div class="flex items-center space-x-2">
+                      <img src="https://picsum.photos/24/30?random=502" alt="" class="w-6 h-8 object-cover rounded">
+                      <span class="font-medium text-gray-900">판타지 모험기</span>
+                    </div>
+                  </td>
+                  <td class="px-3 py-2 text-center border-r border-gray-200 text-gray-600">판타지</td>
+                  <td class="px-3 py-2 text-center border-r border-gray-200 text-gray-900 font-medium">15</td>
+                  <td class="px-3 py-2 text-right border-r border-gray-200 text-gray-900 font-medium">5,432</td>
+                  <td class="px-3 py-2 text-right border-r border-gray-200">
+                    <span class="text-yellow-600 font-medium">4.5</span>
+                  </td>
+                  <td class="px-3 py-2 text-right border-r border-gray-200 text-gray-900 font-medium">2,156</td>
+                  <td class="px-3 py-2 text-right border-r border-gray-200 text-gray-900 font-medium">234</td>
+                  <td class="px-3 py-2 text-right border-r border-gray-200 text-green-600 font-medium">₩68,000</td>
+                  <td class="px-3 py-2 text-right border-r border-gray-200 text-green-600 font-bold">₩340,000</td>
+                  <td class="px-3 py-2 text-center border-r border-gray-200">
+                    <span class="text-green-600 font-medium">+25%</span>
+                  </td>
+                  <td class="px-3 py-2 text-center">
+                    <span class="bg-green-100 text-green-800 px-2 py-1 rounded-full text-xs font-medium">연재중</span>
+                  </td>
+                </tr>
+                
+                <tr class="hover:bg-gray-50 transition-colors">
+                  <td class="px-3 py-2 text-gray-600 border-r border-gray-200 bg-gray-50 font-medium">3</td>
+                  <td class="px-3 py-2 border-r border-gray-200">
+                    <div class="flex items-center space-x-2">
+                      <img src="https://picsum.photos/24/30?random=503" alt="" class="w-6 h-8 object-cover rounded">
+                      <span class="font-medium text-gray-900">로맨스 스토리</span>
+                    </div>
+                  </td>
+                  <td class="px-3 py-2 text-center border-r border-gray-200 text-gray-600">로맨스</td>
+                  <td class="px-3 py-2 text-center border-r border-gray-200 text-gray-900 font-medium">22</td>
+                  <td class="px-3 py-2 text-right border-r border-gray-200 text-gray-900 font-medium">8,765</td>
+                  <td class="px-3 py-2 text-right border-r border-gray-200">
+                    <span class="text-yellow-600 font-medium">4.7</span>
+                  </td>
+                  <td class="px-3 py-2 text-right border-r border-gray-200 text-gray-900 font-medium">3,421</td>
+                  <td class="px-3 py-2 text-right border-r border-gray-200 text-gray-900 font-medium">456</td>
+                  <td class="px-3 py-2 text-right border-r border-gray-200 text-blue-600 font-medium">₩0</td>
+                  <td class="px-3 py-2 text-right border-r border-gray-200 text-green-600 font-bold">₩520,000</td>
+                  <td class="px-3 py-2 text-center border-r border-gray-200">
+                    <span class="text-gray-500 font-medium">-</span>
+                  </td>
+                  <td class="px-3 py-2 text-center">
+                    <span class="bg-blue-100 text-blue-800 px-2 py-1 rounded-full text-xs font-medium">완결</span>
+                  </td>
+                </tr>
+                
+                <!-- 합계 행 -->
+                <tr class="bg-gray-100 font-medium border-t-2 border-gray-300">
+                  <td class="px-3 py-2 text-gray-700 border-r border-gray-200 bg-gray-200 font-bold">합계</td>
+                  <td class="px-3 py-2 border-r border-gray-200 text-gray-700 font-bold">3개 작품</td>
+                  <td class="px-3 py-2 text-center border-r border-gray-200 text-gray-600">-</td>
+                  <td class="px-3 py-2 text-center border-r border-gray-200 text-gray-900 font-bold">45</td>
+                  <td class="px-3 py-2 text-right border-r border-gray-200 text-gray-900 font-bold">16,248</td>
+                  <td class="px-3 py-2 text-right border-r border-gray-200 text-yellow-600 font-bold">4.5</td>
+                  <td class="px-3 py-2 text-right border-r border-gray-200 text-gray-900 font-bold">6,824</td>
+                  <td class="px-3 py-2 text-right border-r border-gray-200 text-gray-900 font-bold">779</td>
+                  <td class="px-3 py-2 text-right border-r border-gray-200 text-green-600 font-bold">₩113,000</td>
+                  <td class="px-3 py-2 text-right border-r border-gray-200 text-green-600 font-bold">₩1,040,000</td>
+                  <td class="px-3 py-2 text-center border-r border-gray-200 text-green-600 font-bold">+18%</td>
+                  <td class="px-3 py-2 text-center">-</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          
+          <!-- 그리드 하단 정보 -->
+          <div class="flex justify-between items-center mt-4 text-sm text-gray-600">
+            <div class="flex items-center space-x-4">
+              <span>총 3개 작품</span>
+              <span>•</span>
+              <span>연재중 2개</span>
+              <span>•</span>
+              <span>완결 1개</span>
+            </div>
+            <div class="flex items-center space-x-2">
+              <span>마지막 업데이트:</span>
+              <span class="font-medium">2024.07.21 09:30</span>
             </div>
           </div>
         </div>
@@ -537,49 +682,17 @@
 
       <!-- 도움말 섹션 -->
       <div id="help-section" class="section-content hidden">
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div class="bg-white rounded-lg shadow-sm p-6">
-            <h3 class="text-lg font-semibold text-gray-900 mb-4">자주 묻는 질문</h3>
-            <div class="space-y-4">
-              <div class="border-b pb-3">
-                <h4 class="font-medium text-gray-900 mb-1">웹툰 업로드는 어떻게 하나요?</h4>
-                <p class="text-sm text-gray-600">상단의 '신규 웹툰 등록' 버튼을 클릭하여 새로운 웹툰을 등록할 수 있습니다.</p>
-              </div>
-              <div class="border-b pb-3">
-                <h4 class="font-medium text-gray-900 mb-1">수익 정산은 언제 되나요?</h4>
-                <p class="text-sm text-gray-600">매월 말일 기준으로 다음 달 15일에 정산됩니다.</p>
-              </div>
-              <div class="border-b pb-3">
-                <h4 class="font-medium text-gray-900 mb-1">작품 통계는 어디서 확인하나요?</h4>
-                <p class="text-sm text-gray-600">좌측 메뉴의 '통계 분석'에서 상세한 통계를 확인할 수 있습니다.</p>
-              </div>
+        <div class="bg-white rounded-lg shadow-sm p-6">
+          <h3 class="text-lg font-semibold text-gray-900 mb-4">자주 묻는 질문</h3>
+          <div class="space-y-4">
+            <div class="border-b pb-3">
+              <h4 class="font-medium text-gray-900 mb-1">웹툰 업로드는 어떻게 하나요?</h4>
+              <p class="text-sm text-gray-600">상단의 '신규 웹툰 등록' 버튼을 클릭하여 새로운 웹툰을 등록할 수 있습니다.</p>
             </div>
-          </div>
-
-          <div class="bg-white rounded-lg shadow-sm p-6">
-            <h3 class="text-lg font-semibold text-gray-900 mb-4">문의하기</h3>
-            <form class="space-y-4">
-              <div>
-                <label class="block text-sm font-medium text-gray-700 mb-2">문의 유형</label>
-                <select class="w-full border border-gray-300 rounded-lg px-3 py-2">
-                  <option>기술 문의</option>
-                  <option>수익 문의</option>
-                  <option>작품 관련</option>
-                  <option>기타</option>
-                </select>
-              </div>
-              <div>
-                <label class="block text-sm font-medium text-gray-700 mb-2">제목</label>
-                <input type="text" class="w-full border border-gray-300 rounded-lg px-3 py-2" placeholder="문의 제목을 입력하세요">
-              </div>
-              <div>
-                <label class="block text-sm font-medium text-gray-700 mb-2">내용</label>
-                <textarea rows="4" class="w-full border border-gray-300 rounded-lg px-3 py-2" placeholder="문의 내용을 상세히 입력해주세요"></textarea>
-              </div>
-              <button type="submit" class="w-full bg-green-500 text-white py-2 rounded-lg hover:bg-green-600">
-                문의 보내기
-              </button>
-            </form>
+            <div class="border-b pb-3">
+              <h4 class="font-medium text-gray-900 mb-1">수익 정산은 언제 되나요?</h4>
+              <p class="text-sm text-gray-600">매월 말일 기준으로 다음 달 15일에 정산됩니다.</p>
+            </div>
           </div>
         </div>
       </div>
@@ -610,10 +723,6 @@
                 <option>일상</option>
                 <option>개그</option>
               </select>
-            </div>
-            <div>
-              <label class="block text-sm font-medium text-gray-700 mb-2">작품 소개</label>
-              <textarea rows="3" class="w-full border border-gray-300 rounded-lg px-3 py-2" placeholder="작품을 간단히 소개해주세요"></textarea>
             </div>
             <div class="flex justify-end space-x-3">
               <button type="button" onclick="closeModal('newWebtoonModal')" class="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50">
@@ -651,15 +760,6 @@
               <label class="block text-sm font-medium text-gray-700 mb-2">에피소드 제목</label>
               <input type="text" class="w-full border border-gray-300 rounded-lg px-3 py-2" placeholder="에피소드 제목을 입력하세요">
             </div>
-            <div>
-              <label class="block text-sm font-medium text-gray-700 mb-2">이미지 업로드</label>
-              <div class="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center">
-                <svg class="mx-auto h-12 w-12 text-gray-400" stroke="currentColor" fill="none" viewBox="0 0 48 48">
-                  <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                </svg>
-                <p class="mt-2 text-sm text-gray-600">클릭하여 이미지를 업로드하세요</p>
-              </div>
-            </div>
             <div class="flex justify-end space-x-3">
               <button type="button" onclick="closeModal('newEpisodeModal')" class="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50">
                 취소
@@ -671,15 +771,9 @@
           </form>
         </div>
       </div>
-      
-      <!-- 하단 액션 버튼 -->
-      <div class="mt-8 flex justify-center space-x-4">
-        <%= link_to "홈으로", root_path, 
-              class: "px-6 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition-colors" %>
-        <%= link_to "로그아웃", logout_path, method: :delete, 
-              class: "px-6 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors",
-              data: { confirm: "정말 로그아웃하시겠습니까?" } %>
-      </div>
+
+      <!-- 이미지 편집기 모달 (완전한 버전) -->
+      <%= render 'complete_image_editor' %>
     </div>
   </div>
 </div>
@@ -738,5 +832,151 @@ document.addEventListener('click', function(event) {
 // 페이지 로드시 대시보드 섹션 활성화
 document.addEventListener('DOMContentLoaded', function() {
   showSection('dashboard');
+  initResizableTable();
 });
+
+// 테이블 열 너비 조절 기능
+function initResizableTable() {
+  const table = document.getElementById('resizable-table');
+  if (!table) return;
+  
+  const resizableColumns = table.querySelectorAll('.resizable');
+  let currentResizer = null;
+  let startX, startWidth;
+  
+  // 각 열에 리사이저 추가
+  resizableColumns.forEach(column => {
+    // 최소 너비 설정
+    const minWidth = parseInt(column.getAttribute('data-min-width') || 30);
+    
+    // 리사이저 요소 생성
+    const resizer = document.createElement('div');
+    resizer.classList.add('column-resizer');
+    resizer.style.cssText = `
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 5px;
+      height: 100%;
+      background-color: transparent;
+      cursor: col-resize;
+      user-select: none;
+      z-index: 1;
+    `;
+    
+    // 열에 상대 위치 설정
+    column.style.position = 'relative';
+    
+    // 리사이저 추가
+    column.appendChild(resizer);
+    
+    // 마우스 이벤트 처리
+    resizer.addEventListener('mousedown', function(e) {
+      currentResizer = resizer;
+      startX = e.pageX;
+      startWidth = parseInt(window.getComputedStyle(column).width);
+      
+      // 드래그 중 스타일 추가
+      resizer.classList.add('active');
+      document.body.style.cursor = 'col-resize';
+      
+      // 마우스 이벤트 리스너 추가
+      document.addEventListener('mousemove', mouseMoveHandler);
+      document.addEventListener('mouseup', mouseUpHandler);
+      
+      // 텍스트 선택 방지
+      e.preventDefault();
+    });
+    
+    // 마우스 오버 효과
+    resizer.addEventListener('mouseover', function() {
+      resizer.style.backgroundColor = 'rgba(0, 120, 212, 0.4)';
+    });
+    
+    resizer.addEventListener('mouseout', function() {
+      if (currentResizer !== resizer) {
+        resizer.style.backgroundColor = 'transparent';
+      }
+    });
+    
+    // 마우스 이동 핸들러
+    function mouseMoveHandler(e) {
+      if (!currentResizer) return;
+      
+      const diffX = e.pageX - startX;
+      const newWidth = Math.max(startWidth + diffX, minWidth);
+      
+      column.style.width = newWidth + 'px';
+      
+      // 테이블 레이아웃 업데이트
+      table.style.tableLayout = 'fixed';
+    }
+    
+    // 마우스 업 핸들러
+    function mouseUpHandler() {
+      currentResizer.classList.remove('active');
+      currentResizer.style.backgroundColor = 'transparent';
+      document.body.style.cursor = '';
+      
+      document.removeEventListener('mousemove', mouseMoveHandler);
+      document.removeEventListener('mouseup', mouseUpHandler);
+      
+      currentResizer = null;
+    }
+  });
+  
+  // 테이블에 스타일 추가
+  table.style.tableLayout = 'fixed';
+  
+  // 리사이저 활성화 스타일
+  const style = document.createElement('style');
+  style.innerHTML = `
+    .column-resizer.active {
+      background-color: rgba(0, 120, 212, 0.6) !important;
+    }
+    .resizable-header th {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+  `;
+  document.head.appendChild(style);
+}
+
+// 테이블 설정 저장 (로컬 스토리지 활용)
+function saveTableSettings() {
+  const table = document.getElementById('resizable-table');
+  if (!table) return;
+  
+  const columns = table.querySelectorAll('.resizable');
+  const settings = {};
+  
+  columns.forEach((column, index) => {
+    settings[index] = {
+      width: column.style.width
+    };
+  });
+  
+  localStorage.setItem('webtoonCreatorTableSettings', JSON.stringify(settings));
+}
+
+// 테이블 설정 불러오기
+function loadTableSettings() {
+  const savedSettings = localStorage.getItem('webtoonCreatorTableSettings');
+  if (!savedSettings) return;
+  
+  const table = document.getElementById('resizable-table');
+  if (!table) return;
+  
+  const columns = table.querySelectorAll('.resizable');
+  const settings = JSON.parse(savedSettings);
+  
+  columns.forEach((column, index) => {
+    if (settings[index] && settings[index].width) {
+      column.style.width = settings[index].width;
+    }
+  });
+  
+  table.style.tableLayout = 'fixed';
+}
 </script>
