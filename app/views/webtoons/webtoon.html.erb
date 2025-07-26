@@ -1,52 +1,111 @@
-<main class="container mx-auto mt-8 px-5 font-sans antialiased">
-  <header class="flex justify-between items-center py-4 border-b border-gray-200 shadow-sm">
-    <h1 class="text-3xl font-extrabold text-gray-800 tracking-tight">웹툰</h1>
-    <nav class="flex space-x-6 text-lg font-semibold">
-      <a href="#" onclick="showAllComics()" class="tab-link text-gray-700 hover:text-green-600 transition duration-300 ease-in-out pb-2 cursor-pointer">전체</a>
-      <a href="#" onclick="showNewComics()" class="tab-link text-gray-700 hover:text-green-600 transition duration-300 ease-in-out pb-2 cursor-pointer">신작</a>
-      <a href="#" onclick="filterByDay('월')" class="tab-link <%= @current_day == '월' ? 'text-green-600 border-b-2 border-green-600' : 'text-gray-700 hover:text-green-600' %> transition duration-300 ease-in-out pb-2 cursor-pointer">월</a>
-      <a href="#" onclick="filterByDay('화')" class="tab-link <%= @current_day == '화' ? 'text-green-600 border-b-2 border-green-600' : 'text-gray-700 hover:text-green-600' %> transition duration-300 ease-in-out pb-2 cursor-pointer">화</a>
-      <a href="#" onclick="filterByDay('수')" class="tab-link <%= @current_day == '수' ? 'text-green-600 border-b-2 border-green-600' : 'text-gray-700 hover:text-green-600' %> transition duration-300 ease-in-out pb-2 cursor-pointer">수</a>
-      <a href="#" onclick="filterByDay('목')" class="tab-link <%= @current_day == '목' ? 'text-green-600 border-b-2 border-green-600' : 'text-gray-700 hover:text-green-600' %> transition duration-300 ease-in-out pb-2 cursor-pointer">목</a>
-      <a href="#" onclick="filterByDay('금')" class="tab-link <%= @current_day == '금' ? 'text-green-600 border-b-2 border-green-600' : 'text-gray-700 hover:text-green-600' %> transition duration-300 ease-in-out pb-2 cursor-pointer">금</a>
-      <a href="#" onclick="filterByDay('토')" class="tab-link <%= @current_day == '토' ? 'text-green-600 border-b-2 border-green-600' : 'text-gray-700 hover:text-green-600' %> transition duration-300 ease-in-out pb-2 cursor-pointer">토</a>
-      <a href="#" onclick="filterByDay('일')" class="tab-link <%= @current_day == '일' ? 'text-green-600 border-b-2 border-green-600' : 'text-gray-700 hover:text-green-600' %> transition duration-300 ease-in-out pb-2 cursor-pointer">일</a>
-    </nav>
-  </header>
-
-  <div class="grid grid-cols-5 gap-x-6 gap-y-10 mt-10">
-    <% @comics.each_with_index do |comic, index| %>
-      <% 
-        # 임시 썸네일 이미지 URL 배열
-        thumbnail_images = [
-          "https://picsum.photos/200/300?random=1",
-          "https://picsum.photos/200/300?random=2", 
-          "https://picsum.photos/200/300?random=3",
-          "https://picsum.photos/200/300?random=4",
-          "https://picsum.photos/200/300?random=5",
-          "https://picsum.photos/200/300?random=6",
-          "https://picsum.photos/200/300?random=7",
-          "https://picsum.photos/200/300?random=8",
-          "https://picsum.photos/200/300?random=9",
-          "https://picsum.photos/200/300?random=10"
-        ]
-        current_image = thumbnail_images[index % thumbnail_images.length]
-      %>
-      <div class="text-center bg-white rounded-lg shadow-md hover:shadow-xl transition duration-300 ease-in-out transform hover:-translate-y-1 overflow-hidden">
-        <a href="/webtoon/list?titleId=<%= comic.id %>&tab=tue">
-          <div class="h-64 w-full overflow-hidden rounded-t-lg">
-            <img src="<%= current_image %>" 
-                 alt="<%= comic.title %> 썸네일" 
-                 class="w-full h-full object-cover hover:scale-105 transition duration-300 ease-in-out"
-                 loading="lazy">
-          </div>
-          <div class="p-4">
-            <p class="mt-2 font-bold text-lg text-gray-800 truncate"><%= comic.title %></p>
-            <p class="text-sm text-gray-600"><%= comic.author %></p>
-          </div>
-        </a>
+<main class="bg-gray-50 min-h-screen">
+  <div class="container mx-auto px-4 py-6">
+    <!-- 이달의 신규 웹툰 섹션 -->
+    <section class="mb-8">
+      <div class="flex items-center justify-between mb-4">
+        <h2 class="text-xl font-bold text-gray-800">이달의 신규 웹툰</h2>
+        <a href="#" class="text-sm text-gray-500 hover:text-green-600">신규웹툰 더보기 ></a>
       </div>
-    <% end %>
+      
+      <div class="grid grid-cols-4 gap-4 mb-6">
+        <% 
+          featured_comics = @comics.first(3)
+          featured_images = [
+            "https://picsum.photos/300/200?random=101",
+            "https://picsum.photos/300/200?random=102", 
+            "https://picsum.photos/300/200?random=103"
+          ]
+        %>
+        <% featured_comics.each_with_index do |comic, index| %>
+          <div class="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+            <div class="relative">
+              <img src="<%= featured_images[index] %>" alt="<%= comic.title %>" class="w-full h-32 object-cover">
+              <div class="absolute top-2 left-2">
+                <span class="bg-green-500 text-white text-xs px-2 py-1 rounded">UP</span>
+              </div>
+            </div>
+            <div class="p-3">
+              <h3 class="font-bold text-sm text-gray-800 truncate"><%= comic.title %></h3>
+              <p class="text-xs text-gray-600 mt-1"><%= comic.author %></p>
+              <p class="text-xs text-gray-500 mt-1 line-clamp-2">흥미진진한 스토리로 가득한 신작 웹툰입니다.</p>
+            </div>
+          </div>
+        <% end %>
+        
+        <!-- 광고 배너 -->
+        <div class="bg-gradient-to-r from-purple-600 to-blue-600 rounded-lg overflow-hidden text-white relative">
+          <div class="p-4 h-full flex flex-col justify-center">
+            <h3 class="font-bold text-lg mb-2">오늘 컵기 하이라이트</h3>
+            <p class="text-sm opacity-90">모바일 게임 오늘 컵기 하이라이트</p>
+            <p class="text-xs mt-2 opacity-75">e스포츠 월드컵 오늘 컵기 하이라이트</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 오늘의 업데이트 웹툰 섹션 -->
+    <section>
+      <div class="flex items-center justify-between mb-4">
+        <h2 class="text-xl font-bold text-gray-800">오늘의 업데이트 웹툰</h2>
+        <div class="flex items-center space-x-2 text-sm text-gray-500">
+          <span>업데이트</span>
+          <span>순서순</span>
+          <span>평점순</span>
+        </div>
+      </div>
+
+      <!-- 요일 탭 -->
+      <div class="flex space-x-1 mb-6 bg-white rounded-lg p-1 shadow-sm">
+        <button onclick="showAllComics()" class="tab-btn px-4 py-2 rounded-md text-sm font-medium transition-colors">전체</button>
+        <button onclick="filterByDay('월')" class="tab-btn px-4 py-2 rounded-md text-sm font-medium transition-colors <%= @current_day == '월' ? 'bg-green-500 text-white' : 'text-gray-600 hover:bg-gray-100' %>">월요일</button>
+        <button onclick="filterByDay('화')" class="tab-btn px-4 py-2 rounded-md text-sm font-medium transition-colors <%= @current_day == '화' ? 'bg-green-500 text-white' : 'text-gray-600 hover:bg-gray-100' %>">화요일</button>
+        <button onclick="filterByDay('수')" class="tab-btn px-4 py-2 rounded-md text-sm font-medium transition-colors <%= @current_day == '수' ? 'bg-green-500 text-white' : 'text-gray-600 hover:bg-gray-100' %>">수요일</button>
+        <button onclick="filterByDay('목')" class="tab-btn px-4 py-2 rounded-md text-sm font-medium transition-colors <%= @current_day == '목' ? 'bg-green-500 text-white' : 'text-gray-600 hover:bg-gray-100' %>">목요일</button>
+        <button onclick="filterByDay('금')" class="tab-btn px-4 py-2 rounded-md text-sm font-medium transition-colors <%= @current_day == '금' ? 'bg-green-500 text-white' : 'text-gray-600 hover:bg-gray-100' %>">금요일</button>
+        <button onclick="filterByDay('토')" class="tab-btn px-4 py-2 rounded-md text-sm font-medium transition-colors <%= @current_day == '토' ? 'bg-green-500 text-white' : 'text-gray-600 hover:bg-gray-100' %>">토요일</button>
+        <button onclick="filterByDay('일')" class="tab-btn px-4 py-2 rounded-md text-sm font-medium transition-colors <%= @current_day == '일' ? 'bg-green-500 text-white' : 'text-gray-600 hover:bg-gray-100' %>">일요일</button>
+        <button onclick="showNewComics()" class="tab-btn px-4 py-2 rounded-md text-sm font-medium transition-colors text-gray-600 hover:bg-gray-100">신작</button>
+        <button class="tab-btn px-4 py-2 rounded-md text-sm font-medium transition-colors text-gray-600 hover:bg-gray-100">완결</button>
+      </div>
+
+      <!-- 웹툰 그리드 -->
+      <div class="grid grid-cols-7 gap-4" id="webtoon-grid">
+        <% @comics.each_with_index do |comic, index| %>
+          <% 
+            thumbnail_images = [
+              "https://picsum.photos/150/200?random=1",
+              "https://picsum.photos/150/200?random=2", 
+              "https://picsum.photos/150/200?random=3",
+              "https://picsum.photos/150/200?random=4",
+              "https://picsum.photos/150/200?random=5",
+              "https://picsum.photos/150/200?random=6",
+              "https://picsum.photos/150/200?random=7",
+              "https://picsum.photos/150/200?random=8",
+              "https://picsum.photos/150/200?random=9",
+              "https://picsum.photos/150/200?random=10"
+            ]
+            current_image = thumbnail_images[index % thumbnail_images.length]
+          %>
+          <div class="group cursor-pointer">
+            <a href="/webtoon/list?titleId=<%= comic.id %>&tab=tue" class="block">
+              <div class="relative mb-2">
+                <img src="<%= current_image %>" 
+                     alt="<%= comic.title %>" 
+                     class="w-full h-40 object-cover rounded-lg group-hover:opacity-90 transition-opacity"
+                     loading="lazy">
+                <div class="absolute top-2 left-2">
+                  <span class="bg-green-500 text-white text-xs px-1.5 py-0.5 rounded font-medium">UP</span>
+                </div>
+              </div>
+              <div class="text-center">
+                <h3 class="font-bold text-sm text-gray-800 truncate mb-1 group-hover:text-green-600 transition-colors"><%= comic.title %></h3>
+                <p class="text-xs text-gray-500"><%= comic.author %></p>
+              </div>
+            </a>
+          </div>
+        <% end %>
+      </div>
+    </section>
   </div>
 
   <!-- 로딩 스피너 -->
@@ -142,11 +201,11 @@ function showNewComics() {
 
 // 웹툰 목록 표시
 function displayComics(comics) {
-  const container = document.querySelector('.grid.grid-cols-5');
+  const container = document.getElementById('webtoon-grid');
   
   if (comics.length === 0) {
     container.innerHTML = `
-      <div class="col-span-5 text-center py-12">
+      <div class="col-span-7 text-center py-12">
         <div class="text-gray-400 text-6xl mb-4">📚</div>
         <h3 class="text-lg font-medium text-gray-900 mb-2">웹툰이 없습니다</h3>
         <p class="text-gray-600">다른 요일을 선택해보세요.</p>
@@ -156,34 +215,37 @@ function displayComics(comics) {
   }
   
   const thumbnailImages = [
-    "https://picsum.photos/200/300?random=1",
-    "https://picsum.photos/200/300?random=2", 
-    "https://picsum.photos/200/300?random=3",
-    "https://picsum.photos/200/300?random=4",
-    "https://picsum.photos/200/300?random=5",
-    "https://picsum.photos/200/300?random=6",
-    "https://picsum.photos/200/300?random=7",
-    "https://picsum.photos/200/300?random=8",
-    "https://picsum.photos/200/300?random=9",
-    "https://picsum.photos/200/300?random=10"
+    "https://picsum.photos/150/200?random=1",
+    "https://picsum.photos/150/200?random=2", 
+    "https://picsum.photos/150/200?random=3",
+    "https://picsum.photos/150/200?random=4",
+    "https://picsum.photos/150/200?random=5",
+    "https://picsum.photos/150/200?random=6",
+    "https://picsum.photos/150/200?random=7",
+    "https://picsum.photos/150/200?random=8",
+    "https://picsum.photos/150/200?random=9",
+    "https://picsum.photos/150/200?random=10"
   ];
   
   container.innerHTML = comics.map((comic, index) => {
     const currentImage = thumbnailImages[index % thumbnailImages.length];
     return `
-      <div class="text-center bg-white rounded-lg shadow-md hover:shadow-xl transition duration-300 ease-in-out transform hover:-translate-y-1 overflow-hidden">
-        <a href="/webtoon/list?titleId=${comic.id}&tab=tue">
-          <div class="h-64 w-full overflow-hidden rounded-t-lg">
+      <div class="group cursor-pointer">
+        <a href="/webtoon/list?titleId=${comic.id}&tab=tue" class="block">
+          <div class="relative mb-2">
             <img src="${comic.thumbnail || currentImage}" 
-                 alt="${comic.title} 썸네일" 
-                 class="w-full h-full object-cover hover:scale-105 transition duration-300 ease-in-out"
+                 alt="${comic.title}" 
+                 class="w-full h-40 object-cover rounded-lg group-hover:opacity-90 transition-opacity"
                  loading="lazy">
+            <div class="absolute top-2 left-2">
+              <span class="bg-green-500 text-white text-xs px-1.5 py-0.5 rounded font-medium">UP</span>
+            </div>
+            ${comic.isNew ? '<div class="absolute top-2 right-2"><span class="bg-red-500 text-white text-xs px-1.5 py-0.5 rounded font-medium">NEW</span></div>' : ''}
           </div>
-          <div class="p-4">
-            <p class="mt-2 font-bold text-lg text-gray-800 truncate">${comic.title}</p>
-            <p class="text-sm text-gray-600">${comic.author}</p>
-            ${comic.isNew ? '<span class="inline-block bg-red-500 text-white text-xs px-2 py-1 rounded mt-1">NEW</span>' : ''}
-            ${comic.dayOfWeek ? `<p class="text-xs text-gray-500 mt-1">${comic.dayOfWeek}요일</p>` : ''}
+          <div class="text-center">
+            <h3 class="font-bold text-sm text-gray-800 truncate mb-1 group-hover:text-green-600 transition-colors">${comic.title}</h3>
+            <p class="text-xs text-gray-500">${comic.author}</p>
+            ${comic.dayOfWeek ? `<p class="text-xs text-gray-400 mt-1">${comic.dayOfWeek}요일</p>` : ''}
           </div>
         </a>
       </div>
@@ -194,18 +256,29 @@ function displayComics(comics) {
 // 활성 탭 설정
 function setActiveTab(activeTab) {
   // 모든 탭 비활성화
-  document.querySelectorAll('.tab-link').forEach(tab => {
-    tab.classList.remove('text-green-600', 'border-b-2', 'border-green-600');
-    tab.classList.add('text-gray-700');
+  document.querySelectorAll('.tab-btn').forEach(tab => {
+    tab.classList.remove('bg-green-500', 'text-white');
+    tab.classList.add('text-gray-600');
   });
   
   // 활성 탭 찾기 및 활성화
-  const tabs = document.querySelectorAll('.tab-link');
+  const tabs = document.querySelectorAll('.tab-btn');
   tabs.forEach(tab => {
     const tabText = tab.textContent.trim();
-    if (tabText === activeTab) {
-      tab.classList.remove('text-gray-700');
-      tab.classList.add('text-green-600', 'border-b-2', 'border-green-600');
+    let matchText = activeTab;
+    
+    // 요일 매핑
+    if (activeTab === '월') matchText = '월요일';
+    else if (activeTab === '화') matchText = '화요일';
+    else if (activeTab === '수') matchText = '수요일';
+    else if (activeTab === '목') matchText = '목요일';
+    else if (activeTab === '금') matchText = '금요일';
+    else if (activeTab === '토') matchText = '토요일';
+    else if (activeTab === '일') matchText = '일요일';
+    
+    if (tabText === matchText) {
+      tab.classList.remove('text-gray-600');
+      tab.classList.add('bg-green-500', 'text-white');
     }
   });
 }
