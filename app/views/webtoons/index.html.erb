@@ -216,8 +216,10 @@ let carouselInterval;
 
 // 페이지 로드 시 초기 데이터 로드
 document.addEventListener('DOMContentLoaded', function() {
-  // 캐러셀 초기화
-  initializeCarousel();
+  console.log('페이지 로드 시작');
+  
+  // 먼저 초기 웹툰 목록을 즉시 표시
+  displayInitialWebtoons();
   
   // 오늘 요일에 해당하는 탭을 활성화
   const todayTab = document.querySelector(`[data-day="${currentDay}"]`);
@@ -236,19 +238,30 @@ document.addEventListener('DOMContentLoaded', function() {
   // 제목 업데이트
   document.getElementById('day-title').textContent = `${currentDay}요일 웹툰`;
   
-  // 초기 웹툰 목록 표시 (서버에서 이미 로드된 데이터 사용)
-  displayInitialWebtoons();
+  // 캐러셀 초기화 (웹툰 목록 표시 후에)
+  setTimeout(() => {
+    initializeCarousel();
+  }, 100);
   
   // 인기 급상승 새로고침 버튼 이벤트 추가
   addTrendingRefreshButton();
   
   // 5분마다 인기 급상승 자동 업데이트
   setInterval(loadTrendingWebtoons, 5 * 60 * 1000);
+  
+  console.log('페이지 로드 완료');
 });
 
 // 초기 웹툰 목록 표시 (서버에서 전달받은 데이터)
 function displayInitialWebtoons() {
+  console.log('초기 웹툰 목록 표시 시작');
   const grid = document.getElementById('webtoon-grid');
+  
+  if (!grid) {
+    console.error('웹툰 그리드 엘리먼트를 찾을 수 없습니다.');
+    return;
+  }
+  
   const comics = [
     <% @comics.each do |comic| %>
       {
@@ -264,7 +277,13 @@ function displayInitialWebtoons() {
     <% end %>
   ];
   
+  console.log('로드된 웹툰 수:', comics.length);
+  console.log('현재 요일:', currentDay);
+  
+  // 즉시 웹툰 목록 표시
   displayWebtoons(comics, currentDay);
+  
+  console.log('초기 웹툰 목록 표시 완료');
 }
 
 // 요일 전환 함수
@@ -313,10 +332,17 @@ async function loadWebtoons(day) {
 function displayWebtoons(comics, day) {
   const grid = document.getElementById('webtoon-grid');
   
+  if (!grid) {
+    console.error('웹툰 그리드 엘리먼트를 찾을 수 없습니다.');
+    return;
+  }
+  
   if (comics.length === 0) {
     grid.innerHTML = '<div class="col-span-full text-center py-8 text-gray-500">해당 요일에 연재되는 웹툰이 없습니다.</div>';
     return;
   }
+  
+  console.log(`${day}요일 웹툰 ${comics.length}개 표시 중...`);
   
   grid.innerHTML = comics.map((comic, index) => `
     <div class="group cursor-pointer">
@@ -324,7 +350,8 @@ function displayWebtoons(comics, day) {
         <div class="relative overflow-hidden rounded-lg mb-3">
           <img src="https://picsum.photos/200/300?random=${comic.id || index + 50}" 
                alt="${comic.title}" 
-               class="aspect-[3/4] w-full object-cover group-hover:scale-105 transition-transform duration-200">
+               class="aspect-[3/4] w-full object-cover group-hover:scale-105 transition-transform duration-200"
+               loading="lazy">
           ${comic.isNew ? '<div class="absolute top-2 left-2 bg-red-500 text-white text-xs px-2 py-1 rounded">UP</div>' : ''}
           <div class="absolute bottom-2 right-2 bg-black bg-opacity-70 text-white text-xs px-2 py-1 rounded">
             ⭐ ${comic.rating}
@@ -338,6 +365,8 @@ function displayWebtoons(comics, day) {
       </a>
     </div>
   `).join('');
+  
+  console.log(`웹툰 목록 표시 완료: ${comics.length}개`);
 }
 
 // 조회수 포맷팅 함수
