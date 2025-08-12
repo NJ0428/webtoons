@@ -1,3 +1,11 @@
+<!-- 전역 로딩 스피너 -->
+<div id="globalLoadingSpinner" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+  <div class="bg-white rounded-lg p-8 flex flex-col items-center space-y-4">
+    <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-green-500"></div>
+    <div class="text-gray-700 font-medium" id="globalLoadingText">로딩 중...</div>
+  </div>
+</div>
+
 <!-- 웹툰 크리에이터 대시보드 -->
 <div class="min-h-screen bg-gray-50">
   <div class="flex">
@@ -450,7 +458,7 @@
                 <span class="bg-green-100 text-green-800 px-2 py-1 rounded">연재중</span>
               </div>
               <div class="flex space-x-2">
-                <button onclick="openImageEditor('웹툰작가의 일상', 'https://picsum.photos/800/1000?random=401')" class="flex-1 bg-blue-500 text-white py-1 px-2 rounded text-xs hover:bg-blue-600">편집</button>
+                <button onclick="openImageEditorWithLoading('웹툰작가의 일상', 'https://picsum.photos/800/1000?random=401')" class="flex-1 bg-blue-500 text-white py-1 px-2 rounded text-xs hover:bg-blue-600">편집</button>
                 <button class="flex-1 bg-gray-500 text-white py-1 px-2 rounded text-xs hover:bg-gray-600">통계</button>
               </div>
             </div>
@@ -464,7 +472,7 @@
                 <span class="bg-green-100 text-green-800 px-2 py-1 rounded">연재중</span>
               </div>
               <div class="flex space-x-2">
-                <button onclick="openImageEditor('판타지 모험기', 'https://picsum.photos/800/1000?random=402')" class="flex-1 bg-blue-500 text-white py-1 px-2 rounded text-xs hover:bg-blue-600">편집</button>
+                <button onclick="openImageEditorWithLoading('판타지 모험기', 'https://picsum.photos/800/1000?random=402')" class="flex-1 bg-blue-500 text-white py-1 px-2 rounded text-xs hover:bg-blue-600">편집</button>
                 <button class="flex-1 bg-gray-500 text-white py-1 px-2 rounded text-xs hover:bg-gray-600">통계</button>
               </div>
             </div>
@@ -478,7 +486,7 @@
                 <span class="bg-yellow-100 text-yellow-800 px-2 py-1 rounded">완결</span>
               </div>
               <div class="flex space-x-2">
-                <button onclick="openImageEditor('로맨스 스토리', 'https://picsum.photos/800/1000?random=403')" class="flex-1 bg-blue-500 text-white py-1 px-2 rounded text-xs hover:bg-blue-600">편집</button>
+                <button onclick="openImageEditorWithLoading('로맨스 스토리', 'https://picsum.photos/800/1000?random=403')" class="flex-1 bg-blue-500 text-white py-1 px-2 rounded text-xs hover:bg-blue-600">편집</button>
                 <button class="flex-1 bg-gray-500 text-white py-1 px-2 rounded text-xs hover:bg-gray-600">통계</button>
               </div>
             </div>
@@ -1331,28 +1339,29 @@
 </div>
 
 <script>
+// 전역 로딩 스피너 함수들
+function showGlobalLoading(text = '로딩 중...') {
+  const spinner = document.getElementById('globalLoadingSpinner');
+  const loadingText = document.getElementById('globalLoadingText');
+  if (spinner && loadingText) {
+    loadingText.textContent = text;
+    spinner.classList.remove('hidden');
+    spinner.classList.add('flex');
+  }
+}
+
+function hideGlobalLoading() {
+  const spinner = document.getElementById('globalLoadingSpinner');
+  if (spinner) {
+    spinner.classList.add('hidden');
+    spinner.classList.remove('flex');
+  }
+}
+
 // 섹션 전환 기능
 function showSection(sectionName) {
-  // 모든 섹션 숨기기
-  document.querySelectorAll('.section-content').forEach(section => {
-    section.classList.add('hidden');
-  });
-  
-  // 모든 네비게이션 아이템 비활성화
-  document.querySelectorAll('.nav-item').forEach(item => {
-    item.classList.remove('text-green-600', 'bg-green-50');
-    item.classList.add('text-gray-600');
-  });
-  
-  // 선택된 섹션 보이기
-  document.getElementById(sectionName + '-section').classList.remove('hidden');
-  
-  // 선택된 네비게이션 아이템 활성화
-  event.target.closest('.nav-item').classList.remove('text-gray-600');
-  event.target.closest('.nav-item').classList.add('text-green-600', 'bg-green-50');
-  
-  // 제목 변경
-  const titles = {
+  // 로딩 스피너 표시
+  const sectionTitles = {
     'dashboard': '대시보드',
     'works': '작품 관리',
     'analytics': '통계 분석',
@@ -1360,7 +1369,35 @@ function showSection(sectionName) {
     'novels': '웹소설 관리',
     'help': '도움말'
   };
-  document.getElementById('section-title').textContent = titles[sectionName];
+  
+  showGlobalLoading(`${sectionTitles[sectionName]} 로딩 중...`);
+  
+  // 약간의 지연을 주어 로딩 효과 표시
+  setTimeout(() => {
+    // 모든 섹션 숨기기
+    document.querySelectorAll('.section-content').forEach(section => {
+      section.classList.add('hidden');
+    });
+    
+    // 모든 네비게이션 아이템 비활성화
+    document.querySelectorAll('.nav-item').forEach(item => {
+      item.classList.remove('text-green-600', 'bg-green-50');
+      item.classList.add('text-gray-600');
+    });
+    
+    // 선택된 섹션 보이기
+    document.getElementById(sectionName + '-section').classList.remove('hidden');
+    
+    // 선택된 네비게이션 아이템 활성화
+    event.target.closest('.nav-item').classList.remove('text-gray-600');
+    event.target.closest('.nav-item').classList.add('text-green-600', 'bg-green-50');
+    
+    // 제목 변경
+    document.getElementById('section-title').textContent = sectionTitles[sectionName];
+    
+    // 로딩 스피너 숨기기
+    hideGlobalLoading();
+  }, 300); // 300ms 지연
 }
 
 // FAQ 아코디언 토글 기능
@@ -1381,14 +1418,49 @@ function toggleFAQ(faqId) {
 
 // 모달 열기/닫기 기능
 function openModal(modalId) {
-  document.getElementById(modalId).classList.remove('hidden');
-  document.getElementById(modalId).classList.add('flex');
+  const modalTitles = {
+    'newWebtoonModal': '새 웹툰 등록',
+    'newEpisodeModal': '새 에피소드 등록',
+    'newNovelModal': '새 웹소설 등록'
+  };
+  
+  const title = modalTitles[modalId] || '모달';
+  showGlobalLoading(`${title} 준비 중...`);
+  
+  setTimeout(() => {
+    document.getElementById(modalId).classList.remove('hidden');
+    document.getElementById(modalId).classList.add('flex');
+    hideGlobalLoading();
+  }, 200);
 }
 
 function closeModal(modalId) {
   document.getElementById(modalId).classList.add('hidden');
   document.getElementById(modalId).classList.remove('flex');
 }
+
+// 이미지 편집기 열기 래퍼 함수
+function openImageEditorWithLoading(title, imageUrl) {
+  showGlobalLoading('이미지 편집기 준비 중...');
+  
+  setTimeout(() => {
+    // 실제 이미지 편집기 열기 함수 호출
+    if (typeof openImageEditor === 'function') {
+      openImageEditor(title, imageUrl);
+    }
+    hideGlobalLoading();
+  }, 300);
+}
+
+// 페이지 로드 시 초기화
+document.addEventListener('DOMContentLoaded', function() {
+  showGlobalLoading('대시보드 로딩 중...');
+  
+  // 페이지 로딩 완료 후 스피너 숨기기
+  setTimeout(() => {
+    hideGlobalLoading();
+  }, 800);
+});
 
 // 모달 외부 클릭시 닫기
 document.addEventListener('click', function(event) {

@@ -1,3 +1,11 @@
+<!-- 로딩 스피너 -->
+<div id="loadingSpinner" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-60">
+  <div class="bg-white rounded-lg p-8 flex flex-col items-center space-y-4">
+    <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500"></div>
+    <div class="text-gray-700 font-medium" id="loadingText">로딩 중...</div>
+  </div>
+</div>
+
 <!-- 이미지 편집기 모달 -->
 <div id="imageEditorModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
   <div class="bg-white rounded-lg w-full max-w-6xl mx-4 h-5/6 flex flex-col">
@@ -35,12 +43,18 @@
           <div class="space-y-3">
             <div class="border-2 border-dashed border-gray-300 rounded-lg p-4 text-center hover:border-blue-400 transition-colors">
               <input type="file" id="image-upload" accept="image/*" multiple class="hidden" onchange="handleImageUpload(event)">
-              <button onclick="document.getElementById('image-upload').click()" class="w-full">
-                <svg class="mx-auto h-8 w-8 text-gray-400 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path>
-                </svg>
-                <p class="text-sm text-gray-600">클릭하여 이미지 업로드</p>
-                <p class="text-xs text-gray-400">JPG, PNG, GIF 지원</p>
+              <button onclick="document.getElementById('image-upload').click()" class="w-full" id="upload-button">
+                <div id="upload-content">
+                  <svg class="mx-auto h-8 w-8 text-gray-400 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path>
+                  </svg>
+                  <p class="text-sm text-gray-600">클릭하여 이미지 업로드</p>
+                  <p class="text-xs text-gray-400">JPG, PNG, GIF 지원</p>
+                </div>
+                <div id="upload-loading" class="hidden">
+                  <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500 mx-auto mb-2"></div>
+                  <p class="text-sm text-blue-600">업로드 중...</p>
+                </div>
               </button>
             </div>
             
@@ -258,7 +272,15 @@
       </div>
 
       <!-- 캔버스 영역 -->
-      <div class="flex-1 p-4 bg-gray-100 flex items-center justify-center">
+      <div class="flex-1 p-4 bg-gray-100 flex items-center justify-center relative">
+        <!-- 캔버스 로딩 스피너 -->
+        <div id="canvas-loading" class="absolute inset-0 bg-gray-100 bg-opacity-90 flex items-center justify-center z-10 hidden">
+          <div class="bg-white rounded-lg p-6 shadow-lg flex flex-col items-center space-y-3">
+            <div class="animate-spin rounded-full h-10 w-10 border-b-2 border-blue-500"></div>
+            <div class="text-gray-700 font-medium" id="canvas-loading-text">캔버스 초기화 중...</div>
+          </div>
+        </div>
+        
         <div class="bg-white shadow-lg rounded-lg overflow-hidden">
           <canvas id="image-canvas" width="800" height="600" style="border: 1px solid #ccc;"></canvas>
         </div>
@@ -289,9 +311,64 @@ let isCropping = false;
 let cropRatio = 'free';
 let originalImage = null;
 
+// 로딩 스피너 표시/숨김 함수들
+function showLoadingSpinner(text = '로딩 중...') {
+  const spinner = document.getElementById('loadingSpinner');
+  const loadingText = document.getElementById('loadingText');
+  if (spinner && loadingText) {
+    loadingText.textContent = text;
+    spinner.classList.remove('hidden');
+    spinner.classList.add('flex');
+  }
+}
+
+function hideLoadingSpinner() {
+  const spinner = document.getElementById('loadingSpinner');
+  if (spinner) {
+    spinner.classList.add('hidden');
+    spinner.classList.remove('flex');
+  }
+}
+
+function showCanvasLoading(text = '캔버스 초기화 중...') {
+  const canvasLoading = document.getElementById('canvas-loading');
+  const loadingText = document.getElementById('canvas-loading-text');
+  if (canvasLoading && loadingText) {
+    loadingText.textContent = text;
+    canvasLoading.classList.remove('hidden');
+  }
+}
+
+function hideCanvasLoading() {
+  const canvasLoading = document.getElementById('canvas-loading');
+  if (canvasLoading) {
+    canvasLoading.classList.add('hidden');
+  }
+}
+
+function showUploadLoading() {
+  const uploadContent = document.getElementById('upload-content');
+  const uploadLoading = document.getElementById('upload-loading');
+  if (uploadContent && uploadLoading) {
+    uploadContent.classList.add('hidden');
+    uploadLoading.classList.remove('hidden');
+  }
+}
+
+function hideUploadLoading() {
+  const uploadContent = document.getElementById('upload-content');
+  const uploadLoading = document.getElementById('upload-loading');
+  if (uploadContent && uploadLoading) {
+    uploadContent.classList.remove('hidden');
+    uploadLoading.classList.add('hidden');
+  }
+}
+
 // 이미지 편집기 열기
 function openImageEditor(title, imageUrl) {
   console.log('이미지 편집기 열기:', title, imageUrl);
+  
+  showLoadingSpinner('편집기 초기화 중...');
   
   document.getElementById('imageEditorModal').classList.remove('hidden');
   document.getElementById('imageEditorModal').classList.add('flex');
@@ -305,6 +382,7 @@ function openImageEditor(title, imageUrl) {
   setTimeout(() => {
     initializeCanvas(imageUrl);
     initializeDragAndDrop();
+    hideLoadingSpinner();
   }, 100);
 }
 
@@ -322,10 +400,12 @@ function closeImageEditor() {
 // 캔버스 초기화
 function initializeCanvas(imageUrl) {
   console.log('캔버스 초기화 시작');
+  showCanvasLoading('캔버스 초기화 중...');
   
   const canvasElement = document.getElementById('image-canvas');
   if (!canvasElement) {
     console.error('캔버스 엘리먼트를 찾을 수 없습니다.');
+    hideCanvasLoading();
     return;
   }
   
@@ -340,7 +420,10 @@ function initializeCanvas(imageUrl) {
   // 배경 이미지 로드
   if (imageUrl) {
     console.log('배경 이미지 로드 시작:', imageUrl);
+    showCanvasLoading('배경 이미지 로드 중...');
     loadBackgroundImage(imageUrl);
+  } else {
+    hideCanvasLoading();
   }
   
   // 그리기 모드 설정
@@ -372,7 +455,15 @@ function loadBackgroundImage(imageUrl) {
     canvas.add(img);
     canvas.sendToBack(img);
     canvas.renderAll();
-  }, { crossOrigin: 'anonymous' });
+    
+    hideCanvasLoading();
+  }, { 
+    crossOrigin: 'anonymous',
+    onError: function() {
+      console.error('배경 이미지 로드 실패');
+      hideCanvasLoading();
+    }
+  });
 }
 
 // 파일 업로드 처리
@@ -381,20 +472,34 @@ function handleImageUpload(event) {
   const files = event.target.files;
   
   if (files.length > 0) {
+    showUploadLoading();
+    
+    let processedFiles = 0;
+    const totalFiles = files.length;
+    
     for (let i = 0; i < files.length; i++) {
       const file = files[i];
       if (file.type.startsWith('image/')) {
         console.log('이미지 파일 처리:', file.name);
-        loadImageFile(file);
+        loadImageFile(file, () => {
+          processedFiles++;
+          if (processedFiles === totalFiles) {
+            hideUploadLoading();
+          }
+        });
       } else {
         alert('이미지 파일만 업로드 가능합니다.');
+        processedFiles++;
+        if (processedFiles === totalFiles) {
+          hideUploadLoading();
+        }
       }
     }
   }
 }
 
 // 이미지 파일 로드
-function loadImageFile(file) {
+function loadImageFile(file, callback) {
   const reader = new FileReader();
   
   reader.onload = function(e) {
@@ -413,6 +518,13 @@ function loadImageFile(file) {
     
     // 즉시 캔버스에 추가
     addImageToCanvas(imageUrl, file.name);
+    
+    if (callback) callback();
+  };
+  
+  reader.onerror = function() {
+    console.error('파일 읽기 실패:', file.name);
+    if (callback) callback();
   };
   
   reader.readAsDataURL(file);
@@ -428,10 +540,13 @@ function addImageToCanvas(imageUrl, fileName) {
     return;
   }
   
+  showCanvasLoading(`이미지 추가 중: ${fileName}`);
+  
   fabric.Image.fromURL(imageUrl, function(img) {
     if (!img) {
       console.error('이미지 로드 실패');
       alert('이미지 로드에 실패했습니다.');
+      hideCanvasLoading();
       return;
     }
     
@@ -469,9 +584,16 @@ function addImageToCanvas(imageUrl, fileName) {
     canvas.setActiveObject(img);
     canvas.renderAll();
     
+    hideCanvasLoading();
     console.log('이미지가 캔버스에 성공적으로 추가되었습니다.');
     
-  }, { crossOrigin: 'anonymous' });
+  }, { 
+    crossOrigin: 'anonymous',
+    onError: function() {
+      console.error('이미지 로드 실패:', fileName);
+      hideCanvasLoading();
+    }
+  });
 }
 
 // 테스트 이미지 추가
@@ -550,10 +672,27 @@ function initializeDragAndDrop() {
     dropZone.textContent = '또는 여기에 파일을 드래그하세요';
     
     const files = e.dataTransfer.files;
-    for (let i = 0; i < files.length; i++) {
-      const file = files[i];
-      if (file.type.startsWith('image/')) {
-        loadImageFile(file);
+    if (files.length > 0) {
+      showUploadLoading();
+      
+      let processedFiles = 0;
+      const totalFiles = files.length;
+      
+      for (let i = 0; i < files.length; i++) {
+        const file = files[i];
+        if (file.type.startsWith('image/')) {
+          loadImageFile(file, () => {
+            processedFiles++;
+            if (processedFiles === totalFiles) {
+              hideUploadLoading();
+            }
+          });
+        } else {
+          processedFiles++;
+          if (processedFiles === totalFiles) {
+            hideUploadLoading();
+          }
+        }
       }
     }
   });
@@ -903,20 +1042,31 @@ function clearCanvas() {
 function saveImage() {
   if (!canvas) return;
   
-  const dataURL = canvas.toDataURL({
-    format: 'png',
-    quality: 1.0
-  });
+  showLoadingSpinner('이미지 저장 중...');
   
-  const link = document.createElement('a');
-  link.download = 'edited-image.png';
-  link.href = dataURL;
-  
-  document.body.appendChild(link);
-  link.click();
-  document.body.removeChild(link);
-  
-  alert('이미지가 저장되었습니다!');
+  setTimeout(() => {
+    try {
+      const dataURL = canvas.toDataURL({
+        format: 'png',
+        quality: 1.0
+      });
+      
+      const link = document.createElement('a');
+      link.download = 'edited-image.png';
+      link.href = dataURL;
+      
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      
+      hideLoadingSpinner();
+      alert('이미지가 저장되었습니다!');
+    } catch (error) {
+      console.error('이미지 저장 실패:', error);
+      hideLoadingSpinner();
+      alert('이미지 저장에 실패했습니다.');
+    }
+  }, 100);
 }
 
 // 색상 조절 함수들
@@ -948,17 +1098,51 @@ function applyColorFilters() {
     return;
   }
   
-  console.log('색상 필터 적용:', { hue: currentHue, saturation: currentSaturation, lightness: currentLightness });
+  showCanvasLoading('색상 필터 적용 중...');
   
-  // 기존 필터 제거
-  activeObject.filters = [];
-  
-  // 색상(Hue) 필터 적용
-  if (currentHue !== 0) {
-    const hueFilter = new fabric.Image.filters.HueRotation({
-      rotation: currentHue / 180 // -1 to 1 범위로 변환
-    });
-    activeObject.filters.push(hueFilter);
+  setTimeout(() => {
+    try {
+      console.log('색상 필터 적용:', { hue: currentHue, saturation: currentSaturation, lightness: currentLightness });
+      
+      // 기존 필터 제거
+      activeObject.filters = [];
+      
+      // 색상(Hue) 필터 적용
+      if (currentHue !== 0) {
+        const hueFilter = new fabric.Image.filters.HueRotation({
+          rotation: currentHue / 180 // -1 to 1 범위로 변환
+        });
+        activeObject.filters.push(hueFilter);
+      }
+      
+      // 채도(Saturation) 필터 적용
+      if (currentSaturation !== 0) {
+        const saturationFilter = new fabric.Image.filters.Saturation({
+          saturation: currentSaturation / 100 // -1 to 1 범위로 변환
+        });
+        activeObject.filters.push(saturationFilter);
+      }
+      
+      // 명도(Brightness) 필터 적용
+      if (currentLightness !== 0) {
+        const brightnessFilter = new fabric.Image.filters.Brightness({
+          brightness: currentLightness / 100 // -1 to 1 범위로 변환
+        });
+        activeObject.filters.push(brightnessFilter);
+      }
+      
+      // 필터 적용
+      activeObject.applyFilters();
+      canvas.renderAll();
+      
+      hideCanvasLoading();
+      console.log('색상 필터 적용 완료');
+    } catch (error) {
+      console.error('색상 필터 적용 실패:', error);
+      hideCanvasLoading();
+      alert('색상 필터 적용에 실패했습니다.');
+    }
+  }, 100);Object.filters.push(hueFilter);
   }
   
   // 채도(Saturation) 필터 적용
