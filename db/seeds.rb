@@ -622,6 +622,34 @@ novels_data = [
     update_day: "매주 화, 목"
   },
   {
+    title: "이제 사랑받을 수 있을까요? 2부",
+    author: "마굴",
+    genre: "romance",
+    description: "황후의 두 번째 인생이 시작된다. 이번에는 진정한 사랑을 찾을 수 있을까? 더욱 깊어진 감정과 새로운 인물들이 등장하는 후속작.",
+    thumbnail_url: "https://picsum.photos/200/280?random=209",
+    rating: 9.4,
+    view_count: 1800000,
+    status: "ongoing",
+    is_new: true,
+    category: "novel",
+    chapter_count: 42,
+    update_day: "매주 월, 금"
+  },
+  {
+    title: "이제 사랑받을 수 있을까요? 외전",
+    author: "마굴",
+    genre: "romance",
+    description: "본편에서 다루지 못한 황제와 황후의 과거 이야기. 그들이 처음 만났던 순간부터 사랑이 식어가기까지의 숨겨진 진실을 담은 외전.",
+    thumbnail_url: "https://picsum.photos/200/280?random=210",
+    rating: 9.0,
+    view_count: 1200000,
+    status: "completed",
+    is_new: false,
+    category: "novel",
+    chapter_count: 28,
+    update_day: "완결"
+  },
+  {
     title: "내 쓰레기통이 후회하고 있다",
     author: "리더스",
     genre: "fantasy",
