@@ -605,8 +605,9 @@ test_user = User.create!(
 
 puts "✅ 테스트 사용자가 생성되었습니다: #{test_user.email}"
 
-# 웹소설 샘플 데이터 (8개)
+# 웹소설 샘플 데이터
 novels_data = [
+  # 로맨스 장르
   {
     title: "이제 사랑받을 수 있을까요?",
     author: "마굴",
@@ -746,6 +747,322 @@ novels_data = [
     category: "novel",
     chapter_count: 71,
     update_day: "매주 목, 일"
+  },
+  
+  # 판타지 장르 추가
+  {
+    title: "던전 마스터의 귀환",
+    author: "김판타지",
+    genre: "fantasy",
+    description: "최강의 던전 마스터가 과거로 돌아가 다시 세계를 구원하는 이야기. 숨겨진 던전과 몬스터들과의 치열한 전투가 펼쳐진다.",
+    thumbnail_url: "https://picsum.photos/200/280?random=211",
+    rating: 9.5,
+    view_count: 3200000,
+    status: "ongoing",
+    is_new: true,
+    category: "novel",
+    chapter_count: 124,
+    update_day: "매주 월, 수, 금"
+  },
+  {
+    title: "마법사 학원의 낙제생",
+    author: "이마법",
+    genre: "fantasy",
+    description: "마법 재능이 없다고 여겨진 소년이 숨겨진 힘을 깨우며 최강의 마법사로 성장하는 학원 판타지.",
+    thumbnail_url: "https://picsum.photos/200/280?random=212",
+    rating: 8.9,
+    view_count: 2100000,
+    status: "ongoing",
+    is_new: false,
+    category: "novel",
+    chapter_count: 89,
+    update_day: "매주 화, 목"
+  },
+  
+  # 현대판타지 장르
+  {
+    title: "도시의 숨겨진 던전",
+    author: "박현대",
+    genre: "modern_fantasy",
+    description: "평범한 도시 속에 숨겨진 던전이 나타나고, 평범한 직장인이 어웨이커로 각성하게 되는 현대 판타지.",
+    thumbnail_url: "https://picsum.photos/200/280?random=213",
+    rating: 9.1,
+    view_count: 2800000,
+    status: "ongoing",
+    is_new: true,
+    category: "novel",
+    chapter_count: 76,
+    update_day: "매주 월, 금"
+  },
+  {
+    title: "회귀한 S급 헌터",
+    author: "최헌터",
+    genre: "modern_fantasy",
+    description: "죽음 직전에 과거로 돌아간 최강의 헌터가 다시 몬스터들과 싸우며 세계를 구하는 이야기.",
+    thumbnail_url: "https://picsum.photos/200/280?random=214",
+    rating: 9.3,
+    view_count: 3500000,
+    status: "ongoing",
+    is_new: true,
+    category: "novel",
+    chapter_count: 98,
+    update_day: "매주 화, 금"
+  },
+  
+  # 무협 장르
+  {
+    title: "절세무신의 환생",
+    author: "강무협",
+    genre: "martial_arts",
+    description: "무림 최고수가 다시 태어나 새로운 무공으로 무림을 평정하는 정통 무협 소설.",
+    thumbnail_url: "https://picsum.photos/200/280?random=215",
+    rating: 8.8,
+    view_count: 1900000,
+    status: "ongoing",
+    is_new: false,
+    category: "novel",
+    chapter_count: 156,
+    update_day: "매주 월, 목"
+  },
+  {
+    title: "마검의 계승자",
+    author: "검무림",
+    genre: "martial_arts",
+    description: "전설의 마검을 얻은 소년이 무림을 뒤흔드는 절세무공을 익혀가는 무협 액션.",
+    thumbnail_url: "https://picsum.photos/200/280?random=216",
+    rating: 9.0,
+    view_count: 2200000,
+    status: "ongoing",
+    is_new: true,
+    category: "novel",
+    chapter_count: 112,
+    update_day: "매주 수, 토"
+  },
+  
+  # 미스터리 장르
+  {
+    title: "심야의 탐정",
+    author: "정미스터리",
+    genre: "mystery",
+    description: "밤에만 나타나는 연쇄살인마를 쫓는 천재 탐정의 추리 스릴러. 매 화마다 숨막히는 반전이 기다린다.",
+    thumbnail_url: "https://picsum.photos/200/280?random=217",
+    rating: 8.7,
+    view_count: 1650000,
+    status: "ongoing",
+    is_new: false,
+    category: "novel",
+    chapter_count: 67,
+    update_day: "매주 화, 일"
+  },
+  {
+    title: "사라진 기억의 진실",
+    author: "한추리",
+    genre: "mystery",
+    description: "기억을 잃은 주인공이 자신의 과거를 추적하며 거대한 음모에 휘말리게 되는 심리 스릴러.",
+    thumbnail_url: "https://picsum.photos/200/280?random=218",
+    rating: 9.2,
+    view_count: 1820000,
+    status: "ongoing",
+    is_new: true,
+    category: "novel",
+    chapter_count: 45,
+    update_day: "매주 목, 토"
+  },
+  
+  # 스릴러 장르
+  {
+    title: "지하철 13번 출구",
+    author: "김스릴러",
+    genre: "thriller",
+    description: "존재하지 않는 지하철 출구로 들어간 사람들이 마주하는 공포와 생존을 그린 서바이벌 스릴러.",
+    thumbnail_url: "https://picsum.photos/200/280?random=219",
+    rating: 8.9,
+    view_count: 2100000,
+    status: "ongoing",
+    is_new: true,
+    category: "novel",
+    chapter_count: 78,
+    update_day: "매주 월, 수"
+  },
+  {
+    title: "24시간 생존게임",
+    author: "박서바이벌",
+    genre: "thriller",
+    description: "갑작스럽게 시작된 데스게임에서 24시간 내에 살아남아야 하는 사람들의 절망적인 생존기.",
+    thumbnail_url: "https://picsum.photos/200/280?random=220",
+    rating: 8.6,
+    view_count: 1750000,
+    status: "completed",
+    is_new: false,
+    category: "novel",
+    chapter_count: 120,
+    update_day: "완결"
+  },
+  
+  # 드라마 장르
+  {
+    title: "아버지의 유산",
+    author: "이드라마",
+    genre: "drama",
+    description: "갑작스럽게 아버지로부터 거대한 유산을 물려받은 평범한 회사원이 겪는 가족과 사랑의 이야기.",
+    thumbnail_url: "https://picsum.photos/200/280?random=221",
+    rating: 9.1,
+    view_count: 1980000,
+    status: "ongoing",
+    is_new: false,
+    category: "novel",
+    chapter_count: 94,
+    update_day: "매주 화, 금"
+  },
+  {
+    title: "의사의 마음",
+    author: "백의사",
+    genre: "drama",
+    description: "환자를 구하는 것이 사명인 의사가 의료진으로서의 갈등과 성장을 그린 메디컬 드라마.",
+    thumbnail_url: "https://picsum.photos/200/280?random=222",
+    rating: 8.8,
+    view_count: 1450000,
+    status: "ongoing",
+    is_new: true,
+    category: "novel",
+    chapter_count: 63,
+    update_day: "매주 일"
+  },
+  
+  # 코미디 장르
+  {
+    title: "웃기는 직장생활",
+    author: "조코미디",
+    genre: "comedy",
+    description: "매일 터지는 직장 내 웃지못할 에피소드들을 유쾌하게 그린 직장인 코미디 소설.",
+    thumbnail_url: "https://picsum.photos/200/280?random=223",
+    rating: 8.5,
+    view_count: 1320000,
+    status: "ongoing",
+    is_new: false,
+    category: "novel",
+    chapter_count: 82,
+    update_day: "매주 수, 토"
+  },
+  
+  # 사극 장르
+  {
+    title: "조선의 암행어사",
+    author: "윤사극",
+    genre: "historical",
+    description: "조선시대 백성을 위해 암행어사가 되어 부패한 관리들을 척결하는 정의로운 이야기.",
+    thumbnail_url: "https://picsum.photos/200/280?random=224",
+    rating: 8.9,
+    view_count: 1680000,
+    status: "ongoing",
+    is_new: true,
+    category: "novel",
+    chapter_count: 108,
+    update_day: "매주 월, 목"
+  },
+  {
+    title: "궁중의 음모",
+    author: "궁중인",
+    genre: "historical",
+    description: "조선왕조 궁궐 속에서 벌어지는 권력투쟁과 사랑, 배신을 그린 본격 궁중 사극.",
+    thumbnail_url: "https://picsum.photos/200/280?random=225",
+    rating: 9.0,
+    view_count: 2150000,
+    status: "ongoing",
+    is_new: false,
+    category: "novel",
+    chapter_count: 145,
+    update_day: "매주 화, 목, 일"
+  },
+  
+  # SF 장르
+  {
+    title: "타임머신의 딜레마",
+    author: "시에스에프",
+    genre: "sf",
+    description: "시간여행의 패러독스에 빠진 과학자가 미래를 구하기 위해 과거와 현재를 넘나드는 SF 소설.",
+    thumbnail_url: "https://picsum.photos/200/280?random=226",
+    rating: 9.2,
+    view_count: 1850000,
+    status: "ongoing",
+    is_new: true,
+    category: "novel",
+    chapter_count: 71,
+    update_day: "매주 금"
+  },
+  {
+    title: "우주의 마지막 희망",
+    author: "김우주",
+    genre: "sf",
+    description: "지구가 멸망한 후 우주를 떠도는 인류의 마지막 함선에서 벌어지는 생존과 희망의 이야기.",
+    thumbnail_url: "https://picsum.photos/200/280?random=227",
+    rating: 8.7,
+    view_count: 1590000,
+    status: "ongoing",
+    is_new: false,
+    category: "novel",
+    chapter_count: 87,
+    update_day: "매주 수, 토"
+  },
+  
+  # 베스트리그 카테고리
+  {
+    title: "전설이 된 소설가",
+    author: "문학가",
+    genre: "drama",
+    description: "무명 작가에서 베스트셀러 작가가 되기까지의 험난한 여정을 그린 성장 드라마.",
+    thumbnail_url: "https://picsum.photos/200/280?random=228",
+    rating: 9.4,
+    view_count: 4200000,
+    status: "completed",
+    is_new: false,
+    category: "best_novel",
+    chapter_count: 180,
+    update_day: "완결"
+  },
+  {
+    title: "최강의 게임 마스터",
+    author: "게임신",
+    genre: "fantasy",
+    description: "가상현실 게임 속에서 최강의 플레이어가 된 주인공이 현실과 가상을 넘나드는 모험.",
+    thumbnail_url: "https://picsum.photos/200/280?random=229",
+    rating: 9.6,
+    view_count: 5100000,
+    status: "ongoing",
+    is_new: true,
+    category: "best_novel",
+    chapter_count: 167,
+    update_day: "매주 화, 목, 토"
+  },
+  
+  # 도전소설 카테고리
+  {
+    title: "신인 작가의 꿈",
+    author: "새내기작가",
+    genre: "drama",
+    description: "웹소설 작가를 꿈꾸는 신인이 첫 작품을 써내려가며 겪는 좌절과 희망의 이야기.",
+    thumbnail_url: "https://picsum.photos/200/280?random=230",
+    rating: 7.8,
+    view_count: 45000,
+    status: "ongoing",
+    is_new: true,
+    category: "challenge_novel",
+    chapter_count: 23,
+    update_day: "매주 일"
+  },
+  {
+    title: "평범한 일상의 기적",
+    author: "일상작가",
+    genre: "drama",
+    description: "평범한 사람들의 일상 속에서 찾는 소소한 행복과 감동을 그린 따뜻한 이야기.",
+    thumbnail_url: "https://picsum.photos/200/280?random=231",
+    rating: 8.1,
+    view_count: 28000,
+    status: "ongoing",
+    is_new: false,
+    category: "challenge_novel",
+    chapter_count: 31,
+    update_day: "매주 토"
   }
 ]
 
