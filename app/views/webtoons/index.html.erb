@@ -215,7 +215,7 @@ let carouselComics = [];
 let carouselInterval;
 
 // 페이지 로드 시 초기 데이터 로드
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('turbo:load', function() {
   console.log('페이지 로드 시작');
   
   // 먼저 초기 웹툰 목록을 즉시 표시
@@ -475,8 +475,8 @@ function getDefaultCarouselData() {
   return [
     {
       id: 1,
-      title: '참교육',
-      author: '채용택',
+      title: '실전교육',
+      author: '김용택',
       description: '교권을 되찾기 위한 교사들의 참교육 이야기',
       rating: 9.4,
       viewCount: 2100000,
@@ -485,8 +485,8 @@ function getDefaultCarouselData() {
     },
     {
       id: 2,
-      title: '전지적 독자 시점',
-      author: '싱숑',
+      title: '전능적 작가 시점',
+      author: '김숑',
       description: '소설 속 세계가 현실이 된 독자의 이야기',
       rating: 9.6,
       viewCount: 2300000,
@@ -495,8 +495,8 @@ function getDefaultCarouselData() {
     },
     {
       id: 3,
-      title: '나 혼자만 레벨업',
-      author: 'DUBU',
+      title: '나 홀로 만렙',
+      author: 'TOFU',
       description: '최약체 헌터에서 최강자로 성장하는 성진우의 이야기',
       rating: 9.7,
       viewCount: 2500000,
@@ -505,8 +505,8 @@ function getDefaultCarouselData() {
     },
     {
       id: 4,
-      title: '여신강림',
-      author: '야옹이',
+      title: '여신등장',
+      author: '멍멍이',
       description: '메이크업으로 변신한 소녀의 로맨스 이야기',
       rating: 9.3,
       viewCount: 2200000,
@@ -515,8 +515,8 @@ function getDefaultCarouselData() {
     },
     {
       id: 5,
-      title: '화산귀환',
-      author: '비가',
+      title: '청성귀환',
+      author: '눈이',
       description: '화산파 제자가 과거로 돌아가 펼치는 무협 이야기',
       rating: 9.3,
       viewCount: 1700000,
