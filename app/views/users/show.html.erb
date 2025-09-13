@@ -726,56 +726,110 @@
 
       <!-- 프로필 설정 섹션 -->
       <div id="profile-section" class="section-content hidden">
-        <div class="bg-white rounded-lg shadow-sm p-6">
-          <h3 class="text-lg font-semibold text-gray-900 mb-6">프로필 설정</h3>
+        <!-- 현재 프로필 정보 -->
+        <div class="bg-white rounded-lg shadow-sm p-6 mb-6">
+          <div class="flex items-center justify-between mb-6">
+            <div>
+              <h3 class="text-lg font-semibold text-gray-900">프로필 정보</h3>
+              <% if @current_profile %>
+                <p class="text-sm text-gray-600">현재 버전: <%= @current_profile.version %> · 마지막 수정: <%= @current_profile.updated_at.strftime("%Y년 %m월 %d일") %></p>
+              <% end %>
+            </div>
+            <div class="flex space-x-3">
+              <%= link_to "변경 이력", profile_history_user_path(@user), 
+                  class: "bg-gray-600 text-white px-4 py-2 rounded-lg text-sm hover:bg-gray-700 transition-colors" %>
+              <%= link_to "프로필 편집", edit_user_path(@user), 
+                  class: "bg-blue-600 text-white px-4 py-2 rounded-lg text-sm hover:bg-blue-700 transition-colors" %>
+            </div>
+          </div>
           
-          <form class="space-y-6">
-            <div class="flex items-center space-x-6">
-              <img src="<%= (@user&.avatar_url) || 'https://ui-avatars.com/api/?name=Creator&background=6366f1&color=fff' %>" 
-                   alt="프로필" class="w-20 h-20 rounded-full">
+          <% if @current_profile %>
+            <div class="flex items-center space-x-6 mb-6">
+              <img src="<%= @current_profile.avatar_url %>" 
+                   alt="프로필" class="w-20 h-20 rounded-full object-cover border-2 border-gray-200">
               <div>
-                <button type="button" class="bg-blue-500 text-white px-4 py-2 rounded-lg text-sm hover:bg-blue-600">
-                  사진 변경
-                </button>
-                <p class="text-xs text-gray-500 mt-1">JPG, PNG 파일만 가능 (최대 5MB)</p>
+                <h4 class="text-xl font-semibold text-gray-900"><%= @current_profile.name %></h4>
+                <p class="text-gray-600">@<%= @current_profile.nickname %></p>
+                <% if @current_profile.age %>
+                  <p class="text-sm text-gray-500"><%= @current_profile.age %>세</p>
+                <% end %>
               </div>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
               <div>
-                <label class="block text-sm font-medium text-gray-700 mb-2">이름</label>
-                <input type="text" value="<%= @user&.name || '크리에이터' %>" 
-                       class="w-full border border-gray-300 rounded-lg px-3 py-2">
+                <label class="block text-sm font-medium text-gray-700 mb-1">이메일</label>
+                <p class="text-gray-900"><%= @user.email %></p>
               </div>
               <div>
-                <label class="block text-sm font-medium text-gray-700 mb-2">닉네임</label>
-                <input type="text" value="<%= @user&.nickname || 'creator' %>" 
-                       class="w-full border border-gray-300 rounded-lg px-3 py-2">
+                <label class="block text-sm font-medium text-gray-700 mb-1">전화번호</label>
+                <p class="text-gray-900"><%= @current_profile.phone.presence || '미입력' %></p>
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">생년월일</label>
+                <p class="text-gray-900">
+                  <%= @current_profile.birth_date&.strftime("%Y년 %m월 %d일") || '미입력' %>
+                </p>
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">성별</label>
+                <p class="text-gray-900">
+                  <%= case @current_profile.gender
+                      when 'male' then '남성'
+                      when 'female' then '여성'
+                      when 'other' then '기타'
+                      else '미입력'
+                      end %>
+                </p>
               </div>
             </div>
 
-            <div>
-              <label class="block text-sm font-medium text-gray-700 mb-2">이메일</label>
-              <input type="email" value="<%= @user&.email || 'creator@example.com' %>" 
-                     class="w-full border border-gray-300 rounded-lg px-3 py-2">
+            <% if @current_profile.bio.present? %>
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">자기소개</label>
+                <div class="bg-gray-50 rounded-lg p-4">
+                  <p class="text-gray-900 whitespace-pre-wrap"><%= @current_profile.bio %></p>
+                </div>
+              </div>
+            <% end %>
+          <% else %>
+            <div class="text-center py-8">
+              <div class="text-gray-400 mb-4">
+                <svg class="w-16 h-16 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                        d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                </svg>
+              </div>
+              <h3 class="text-lg font-medium text-gray-900 mb-2">프로필이 없습니다</h3>
+              <p class="text-gray-600 mb-4">프로필 정보를 설정해주세요.</p>
+              <%= link_to "프로필 설정", edit_user_path(@user), 
+                  class: "bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors" %>
             </div>
-
-            <div>
-              <label class="block text-sm font-medium text-gray-700 mb-2">자기소개</label>
-              <textarea rows="4" class="w-full border border-gray-300 rounded-lg px-3 py-2" 
-                        placeholder="자신을 소개해주세요..."><%= @user&.bio || '웹툰을 사랑하는 크리에이터입니다.' %></textarea>
-            </div>
-
-            <div class="flex justify-end space-x-3">
-              <button type="button" class="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50">
-                취소
-              </button>
-              <button type="submit" class="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600">
-                저장
-              </button>
-            </div>
-          </form>
+          <% end %>
         </div>
+
+        <!-- 프로필 통계 -->
+        <% if @current_profile %>
+          <div class="bg-white rounded-lg shadow-sm p-6">
+            <h3 class="text-lg font-semibold text-gray-900 mb-4">프로필 통계</h3>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div class="bg-blue-50 rounded-lg p-4 text-center">
+                <div class="text-2xl font-bold text-blue-600"><%= @user.user_profiles.count %></div>
+                <div class="text-sm text-gray-600">총 프로필 버전</div>
+              </div>
+              <div class="bg-green-50 rounded-lg p-4 text-center">
+                <div class="text-2xl font-bold text-green-600"><%= @current_profile.version %></div>
+                <div class="text-sm text-gray-600">현재 버전</div>
+              </div>
+              <div class="bg-purple-50 rounded-lg p-4 text-center">
+                <div class="text-2xl font-bold text-purple-600">
+                  <%= time_ago_in_words(@current_profile.updated_at) %>
+                </div>
+                <div class="text-sm text-gray-600">마지막 업데이트</div>
+              </div>
+            </div>
+          </div>
+        <% end %>
       </div>
 
       <!-- 웹소설 관리 섹션 -->

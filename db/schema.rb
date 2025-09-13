@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_07_20_035732) do
+ActiveRecord::Schema[8.0].define(version: 2025_09_13_064623) do
   create_table "comics", force: :cascade do |t|
     t.string "title"
     t.string "author"
@@ -61,6 +61,26 @@ ActiveRecord::Schema[8.0].define(version: 2025_07_20_035732) do
     t.index ["status"], name: "index_novels_on_status"
   end
 
+  create_table "user_profiles", force: :cascade do |t|
+    t.integer "user_id", null: false
+    t.string "name", null: false
+    t.string "nickname", null: false
+    t.string "phone"
+    t.date "birth_date"
+    t.string "gender"
+    t.string "profile_image"
+    t.text "bio"
+    t.integer "version", default: 1, null: false
+    t.boolean "is_current", default: false, null: false
+    t.text "change_reason"
+    t.string "changed_by"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id", "is_current"], name: "index_user_profiles_on_user_id_and_is_current"
+    t.index ["user_id", "version"], name: "index_user_profiles_on_user_id_and_version", unique: true
+    t.index ["user_id"], name: "index_user_profiles_on_user_id"
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "email"
     t.string "password_digest"
@@ -77,4 +97,5 @@ ActiveRecord::Schema[8.0].define(version: 2025_07_20_035732) do
   end
 
   add_foreign_key "episodes", "comics"
+  add_foreign_key "user_profiles", "users"
 end

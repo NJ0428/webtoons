@@ -21,7 +21,17 @@ Rails.application.routes.draw do
   get "/signup", to: "users#new"
   post "/signup", to: "users#create"
   get "/test", to: "users#test"  # 테스트용 라우트
+  
+  # 사용자 프로필 관련 라우트
+  resources :users, only: [:show, :edit, :update] do
+    member do
+      get :profile_history
+      post :rollback_profile
+    end
+  end
   get "/profile", to: "users#show"
+  get "/profile/edit", to: "users#edit"
+  patch "/profile", to: "users#update"
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
